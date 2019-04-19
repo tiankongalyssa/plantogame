@@ -1,0 +1,21 @@
+server:
+  port: 9012
+spring:
+  application:
+    name: plantogame-web
+  jackson:
+    time-zone: Asia/Shanghai
+eureka:
+  client:
+    service-url:
+#      defaultZone: http://127.0.0.1:6868/eureka/
+      defaultZone: http://104.233.193.162:6868/eureka/
+    fetch-registry: true
+    register-with-eureka: true
+  instance:
+    prefer-ip-address: true
+zuul:
+  routes:
+    plantogame-plantogame:
+      path: /plant/**
+      serviceId: plantogame-plantogame

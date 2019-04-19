@@ -1,0 +1,27 @@
+server:
+  port: 9002
+spring:
+  application:
+    name: plantogame-gaindata #指定服务名
+  datasource:
+    driverClassName: com.mysql.jdbc.Driver
+#    url: jdbc:mysql://47.75.175.195:3306/gameplan?characterEncoding=UTF8&useSSL=false
+    url: jdbc:mysql://tomysql:3306/gameplan?characterEncoding=UTF8&useSSL=false # tomysql为mysql容器别名 如果使用104.223.193.161:3306 是找不到的
+    username: root
+    password: root
+  jpa:
+    database: MySQL
+    show-sql: false
+  jackson: # 配置时区(不配置 在服务器启动时时间会与本地不一致)
+    time-zone: Asia/Shanghai
+eureka:
+  client:
+    service-url:
+#      defaultZone: http://127.0.0.1:6868/eureka/
+      defaultZone: http://104.233.193.162:6868/eureka/
+  instance: # 将容器IP注册到eureka 不配置就是容器名 (这里老师讲过,在服务器部署时需要打开,但我却没有注意到..)
+    prefer-ip-address: true
+jwt:
+  config:
+    key: itcast
+    ttl: 360000

@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CompilerConfiguration">
+    <annotationProcessing>
+      <profile name="Maven default annotation processors profile" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <module name="plantogame_common" />
+        <module name="plantogame_eureka" />
+        <module name="plantogame_gaindata" />
+        <module name="plantogame_plantogame" />
+        <module name="plantogame_web" />
+      </profile>
+    </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="plantogame_common" target="1.8" />
+      <module name="plantogame_eureka" target="1.8" />
+      <module name="plantogame_gaindata" target="1.8" />
+      <module name="plantogame_parent" target="1.8" />
+      <module name="plantogame_plantogame" target="1.8" />
+      <module name="plantogame_web" target="1.8" />
+    </bytecodeTargetLevel>
+  </component>
+</project>

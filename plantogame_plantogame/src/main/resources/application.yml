@@ -1,0 +1,36 @@
+server:
+  port: 9001
+#  ssl:
+#    key-store: classpath:server.p12
+#    key-store-password:
+#    key-store-type: PKCS12
+#    key-alias: 1
+spring:
+  jackson:
+    time-zone: Asia/Shanghai
+  application:
+    name: plantogame-plantogame #指定服务名
+  datasource:
+    driverClassName: com.mysql.jdbc.Driver
+#    url: jdbc:mysql://47.75.175.195:3306/gameplan?characterEncoding=UTF8&useSSL=false
+    url: jdbc:mysql://tomysql:3306/gameplan?characterEncoding=UTF8&useSSL=false
+    username: root
+    password: root
+  jpa:
+    database: MySQL
+    show-sql: false
+eureka:
+  client:
+    service-url:
+#      defaultZone: http://127.0.0.1:6868/eureka/
+        defaultZone: http://104.233.193.162:6868/eureka/
+    fetch-registry: true
+    register-with-eureka: true
+  instance:
+    prefer-ip-address: true
+# 数组方式
+ip: 10.20.32.159,10.10.32.38,10.10.32.176,121.58.219.192,223.119.196.179,api.b9001.com,104.233.193.162
+jwt:
+  config:
+    key: itcast
+    ttl: 360000
