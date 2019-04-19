@@ -13,12 +13,15 @@ spring:
   datasource:
     driverClassName: com.mysql.jdbc.Driver
 #    url: jdbc:mysql://47.75.175.195:3306/gameplan?characterEncoding=UTF8&useSSL=false
+#    url: jdbc:mysql://104.233.193.162:3306/gameplan?characterEncoding=UTF8&useSSL=false
     url: jdbc:mysql://tomysql:3306/gameplan?characterEncoding=UTF8&useSSL=false
     username: root
     password: root
   jpa:
     database: MySQL
     show-sql: false
+  redis:
+    host: 104.233.193.162
 eureka:
   client:
     service-url:

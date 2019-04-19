@@ -7,10 +7,12 @@ import com.sky.plantogame.pojo.SonOfLotteryRecord;
 import com.sky.plantogame.utils.GameUtil;
 import com.sky.plantogame.vo.ChangLong;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 import utils.CommonUtils;
 
 import java.util.*;
+import java.util.concurrent.TimeUnit;
 
 /**
  * lotteryRecord服务层
@@ -25,10 +27,13 @@ public class LotteryRecordService {
 
     private final PlanCreateService planCreateService;
 
+    private final RedisTemplate redisTemplate;
+
     @Autowired
-    public LotteryRecordService(LotteryRecordDao lotteryRecordDao, PlanCreateService planCreateService) {
+    public LotteryRecordService(LotteryRecordDao lotteryRecordDao, PlanCreateService planCreateService, RedisTemplate redisTemplate) {
         this.lotteryRecordDao = lotteryRecordDao;
         this.planCreateService = planCreateService;
+        this.redisTemplate = redisTemplate;
     }
 
     /**
@@ -70,11 +75,10 @@ public class LotteryRecordService {
      * @return LotteryRecord
      */
     public SonOfLotteryRecord findNewRecord(String gameKey, String type) {
-        LotteryRecord lotteryRecord = lotteryRecordDao.findTop1ByGamekeyOrderByCreateTimeDesc(gameKey);
-        PlanCreate create = planCreateService.findNewPlan(type, gameKey);
-        PlanCreate before = planCreateService.findBefore(type, gameKey);
-        SonOfLotteryRecord son = null;
-        if (lotteryRecord != null) {
+        SonOfLotteryRecord son = (SonOfLotteryRecord) redisTemplate.opsForValue().get(gameKey + type);
+        if (son == null) {
+            LotteryRecord lotteryRecord = lotteryRecordDao.findTop1ByGamekeyOrderByCreateTimeDesc(gameKey);
+            PlanCreate create = planCreateService.findNewPlan(type, gameKey);
             son = new SonOfLotteryRecord(lotteryRecord);
             son.setServerTime(new Date());
             //判断下次开奖时间是否大于当前时间,否则表示还没有开奖
@@ -82,9 +86,12 @@ public class LotteryRecordService {
             son.setNowPlan(create.getMyriaPlane());
             son.setNowTimes(Timeshandler(create.getTimes()));
             if (create.getTimes() == 1) {
+                PlanCreate before = planCreateService.findBefore(type, gameKey);
                 son.setOldPlan(before.getMyriaPlane());
                 son.setOldTimes(Timeshandler(before.getTimes()));
             }
+            System.out.println(gameKey+type+"加入缓存");
+            redisTemplate.opsForValue().set(gameKey + type, son, 40, TimeUnit.SECONDS);
         }
         return son;
     }
