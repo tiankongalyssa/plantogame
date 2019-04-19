@@ -4,7 +4,6 @@ import com.sky.plantogame.service.PlanCreateService;
 import entity.Result;
 import entity.StatusCode;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.web.bind.annotation.*;
 
@@ -34,7 +33,6 @@ public class PlanCreateController {
      * @return Result
      */
     @GetMapping("/{type}/{gameKey}")
-    @Async
     public Result findNewPlan(@PathVariable String type, @PathVariable String gameKey) {
         return new Result(true, StatusCode.OK, "查询成功", planCreateService.findNewPlan(type, gameKey));
     }
@@ -47,7 +45,6 @@ public class PlanCreateController {
      * @return Result
      */
     @GetMapping("/list/{type}/{gameKey}")
-    @Async
     public Result findTodayList(@PathVariable String type, @PathVariable String gameKey) {
         return new Result(true, StatusCode.OK, "查询成功", planCreateService.findTodayList(type, gameKey));
     }

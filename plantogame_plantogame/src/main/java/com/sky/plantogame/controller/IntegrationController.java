@@ -30,7 +30,6 @@ public class IntegrationController {
      * @return Result
      */
     @GetMapping("/{gameKey}")
-    @Async
     public Result findGuanYaList(@PathVariable String gameKey) {
         if ("ssc".equals(gameKey) || "1008".equals(gameKey) || "1009".equals(gameKey) || "1407".equals(gameKey)) {
             return new Result(true, StatusCode.OK, "查询成功", integrationService.findTotalList(gameKey));

@@ -9,7 +9,6 @@ import entity.Result;
 import entity.StatusCode;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.web.bind.annotation.*;
 
@@ -41,7 +40,6 @@ public class DetailsController {
      * @return Result
      */
     @GetMapping("/hotCool/{gameKey}/{size}")
-    @Async
     public Result getAnalysis(@PathVariable String gameKey, @PathVariable Integer size) {
         return new Result(true, StatusCode.OK, "查询成功", detailsService.getHotCool(gameKey, size));
     }
@@ -55,7 +53,6 @@ public class DetailsController {
      * @return Result
      */
     @GetMapping("/{dataType}/{gameKey}/{size}")
-    @Async
     public Result getAnalysis(@PathVariable String dataType, @PathVariable String gameKey, @PathVariable Integer size) {
         return new Result(true, StatusCode.OK, "查询成功", detailsService.getAnalysis(gameKey, dataType, size));
     }
@@ -70,7 +67,6 @@ public class DetailsController {
      * @return Result
      */
     @GetMapping("/{gameKey}/{dateType}/{page}/{size}")
-    @Async
     public Result findDetailsList(@PathVariable String dateType, @PathVariable String gameKey, @PathVariable int page, @PathVariable int size) {
         if ("1407".equals(gameKey)) {
             Page<K3> pageList = k3Service.findK3List(gameKey, dateType, page, size);

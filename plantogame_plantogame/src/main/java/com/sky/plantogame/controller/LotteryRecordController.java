@@ -33,7 +33,6 @@ public class LotteryRecordController {
      * @return Result
      */
     @GetMapping("/changLong/{gameKey}")
-    @Async
     public Result getChangLong(@PathVariable String gameKey) {
         return new Result(true, StatusCode.OK, "查询成功", lotteryRecordService.getChangLong(gameKey));
     }
@@ -45,7 +44,6 @@ public class LotteryRecordController {
      * @return Result
      */
     @RequestMapping(value = "/{gameKey}/{type}", method = RequestMethod.GET)
-    @Async
     public Result findNewGameInfo(@PathVariable String gameKey,@PathVariable String type) {
         return new Result(true, StatusCode.OK, "查询成功", lotteryRecordService.findNewRecord(gameKey,type));
     }
