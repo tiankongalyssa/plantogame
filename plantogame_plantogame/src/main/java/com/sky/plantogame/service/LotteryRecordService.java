@@ -75,9 +75,9 @@ public class LotteryRecordService {
      * @return LotteryRecord
      */
     public SonOfLotteryRecord findNewRecord(String gameKey, String type) {
-        SonOfLotteryRecord son = (SonOfLotteryRecord) redisTemplate.opsForValue().get(gameKey + type);
+        LotteryRecord lotteryRecord = lotteryRecordDao.findTop1ByGamekeyOrderByCreateTimeDesc(gameKey);
+        SonOfLotteryRecord son = (SonOfLotteryRecord) redisTemplate.opsForValue().get(gameKey + type + lotteryRecord.getGid());
         if (son == null) {
-            LotteryRecord lotteryRecord = lotteryRecordDao.findTop1ByGamekeyOrderByCreateTimeDesc(gameKey);
             PlanCreate create = planCreateService.findNewPlan(type, gameKey);
             son = new SonOfLotteryRecord(lotteryRecord);
             son.setServerTime(new Date());
@@ -90,8 +90,8 @@ public class LotteryRecordService {
                 son.setOldPlan(before.getMyriaPlane());
                 son.setOldTimes(Timeshandler(before.getTimes()));
             }
-            System.out.println(gameKey+type+"加入缓存");
-            redisTemplate.opsForValue().set(gameKey + type, son, 40, TimeUnit.SECONDS);
+            System.out.println(gameKey + type + "加入缓存");
+            redisTemplate.opsForValue().set(gameKey + type + lotteryRecord.getGid(), son, 40, TimeUnit.SECONDS);
         }
         return son;
     }
