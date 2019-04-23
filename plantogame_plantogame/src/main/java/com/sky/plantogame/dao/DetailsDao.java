@@ -22,7 +22,7 @@ public interface DetailsDao extends JpaRepository<Details, String>, JpaSpecifica
      * @param pageable pageable
      * @return Page<Details>
      */
-    @Query(value = "SELECT * FROM tb_details WHERE DATE_FORMAT(create_time,'%Y-%m-%d') = DATE_SUB(CURDATE(),INTERVAL 0 DAY) AND gamekey = ?1 ORDER BY create_time DESC limit 0,100", nativeQuery = true)
+    @Query(value = "SELECT * FROM tb_details WHERE DATE_FORMAT(create_time,'%Y-%m-%d') = DATE_SUB(CURDATE(),INTERVAL 0 DAY) AND gamekey = ?1 ORDER BY create_time DESC", nativeQuery = true)
     Page<Details> findToday(String gameKey, Pageable pageable);
 
     /**
@@ -32,7 +32,7 @@ public interface DetailsDao extends JpaRepository<Details, String>, JpaSpecifica
      * @param pageable pageable
      * @return Page<Details>
      */                                                         //创建时间格式转换为2019-3-4  DATE_SUB(CURDATE(),INTERVAL 1 DAY)获取昨天日期
-    @Query(value = "SELECT * FROM tb_details WHERE DATE_FORMAT(create_time,'%Y-%m-%d') = DATE_SUB(CURDATE(),INTERVAL 1 DAY) AND gamekey = ?1 ORDER BY create_time DESC limit 0,100", nativeQuery = true)
+    @Query(value = "SELECT * FROM tb_details WHERE DATE_FORMAT(create_time,'%Y-%m-%d') = DATE_SUB(CURDATE(),INTERVAL 1 DAY) AND gamekey = ?1 ORDER BY create_time DESC ", nativeQuery = true)
     Page<Details> findYesterDay(String gameKey, Pageable pageable);
 
     /**
@@ -42,7 +42,7 @@ public interface DetailsDao extends JpaRepository<Details, String>, JpaSpecifica
      * @param pageable pageable
      * @return Page<Details>
      */
-    @Query(value = "SELECT * FROM tb_details WHERE DATE_FORMAT(create_time,'%Y-%m-%d') = DATE_SUB(CURDATE(),INTERVAL 2 DAY)  AND gamekey = ?1 ORDER BY create_time DESC limit 0,100", nativeQuery = true)
+    @Query(value = "SELECT * FROM tb_details WHERE DATE_FORMAT(create_time,'%Y-%m-%d') = DATE_SUB(CURDATE(),INTERVAL 2 DAY)  AND gamekey = ?1 ORDER BY create_time DESC", nativeQuery = true)
     Page<Details> findBeforeYesterDay(String gameKey, Pageable pageable);
 
     @Query(value = "SELECT * FROM `tb_details` WHERE gamekey=?1 AND DATE_FORMAT(create_time,'%Y-%m-%d') = DATE_SUB(CURDATE(),INTERVAL ?2 DAY) ORDER BY create_time DESC limit 0,100", nativeQuery = true)
