@@ -13,6 +13,6 @@ import java.util.List;
  * @author Administrator
  */
 public interface TotalDao extends JpaRepository<Total, String>, JpaSpecificationExecutor<Total> {
-    @Query(value = "SELECT * FROM tb_synthesize_total WHERE DATE_FORMAT(create_time,'%Y-%m-%d') = DATE_SUB(CURDATE(),INTERVAL 0 DAY) AND gamekey = ?1 ORDER BY create_time DESC", nativeQuery = true)
+    @Query(value = "SELECT * FROM tb_synthesize_total WHERE DATE_FORMAT(create_time,'%Y-%m-%d') = DATE_SUB(CURDATE(),INTERVAL 0 DAY) AND gamekey = ?1 ORDER BY create_time DESC LIMIT 0,200", nativeQuery = true)
     List<Total> findTotalList(String gameKey);
 }

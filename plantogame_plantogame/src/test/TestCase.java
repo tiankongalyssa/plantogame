@@ -133,4 +133,8 @@ public class TestCase {
         int times = 9;
         System.out.println(8 * (int) Math.pow(3, (times - 3)));
     }
+    @Test
+    public void tes9(){
+
+    }
 }
