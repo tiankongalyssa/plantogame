@@ -112,7 +112,9 @@ public class GameRunner extends BaseWork implements ApplicationRunner {
     private void handlerGame(String gameKey) {
         try {
             //请求接口转换为java对象
-            LotteryRecord lotteryRecord = jsonToLotteryRecord(gameKey, HttpUtil.getForeignData(gameKey, 1));
+            String foreignData = HttpUtil.getForeignData(gameKey, 1);
+            System.out.println("foreignData = " + foreignData);
+            LotteryRecord lotteryRecord = jsonToLotteryRecord(gameKey, foreignData);
             //判断数据是否存在
             if (null != lotteryRecordService.findByGamekeyAndNextOpenIssue(gameKey, lotteryRecord.getGid())) {
                 System.out.println("TYPE:" + lotteryRecord.getGamekey() + " GID:" + lotteryRecord.getGid() + "is already exist! next open time:" + lotteryRecord.getNextOpenTime());
