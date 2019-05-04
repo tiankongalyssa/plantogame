@@ -113,7 +113,6 @@ public class GameRunner extends BaseWork implements ApplicationRunner {
         try {
             //请求接口转换为java对象
             String foreignData = HttpUtil.getForeignData(gameKey, 1);
-            System.out.println("foreignData = " + foreignData);
             LotteryRecord lotteryRecord = jsonToLotteryRecord(gameKey, foreignData);
             //判断数据是否存在
             if (null != lotteryRecordService.findByGamekeyAndNextOpenIssue(gameKey, lotteryRecord.getGid())) {
@@ -182,7 +181,7 @@ public class GameRunner extends BaseWork implements ApplicationRunner {
 //        every1minutes.add("1008");
 //        every1minutes.add("1304");
 //        every1minutes.add("1407");
-        int num = "1009".equals(lotteryCode) ? 5 : 1;
+        int num = "1306".equals(lotteryCode) ? 5 : 1;
         return new Date(openTime.getTime() + 1000 * 60 * num);
     }
 
