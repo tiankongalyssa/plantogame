@@ -44,7 +44,7 @@ public class GameHandler extends BaseWork {
         }
         num = Integer.valueOf(goalNum); //将开奖数字转换为int
         //不会出现0的彩种
-        boolean b = "bjpk10".equals(gameKey) || "metpk10".equals(gameKey) || "1304".equals(gameKey) || "1407".equals(gameKey);
+        boolean b = "bjpk10".equals(gameKey) || "metpk10".equals(gameKey) || "1304".equals(gameKey) || "1306".equals(gameKey)|| "1407".equals(gameKey);
         //将上期数字重置为1
         if (beforeGoalNum != null) {
             Integer beforePlace = Integer.valueOf(beforeGoalNum);
