@@ -65,7 +65,7 @@ public class PlanCreateService {
             throw new RuntimeException(type+"类型计划不存在");
         }
         //设置期号格式
-        if ("bjpk10".equals(gameKey)||"1304".equals(gameKey)) {
+        if ("bjpk10".equals(gameKey)||"1304".equals(gameKey) ||"1306".equals(gameKey)) {
             plan.setGidFirst(plan.getGidFirst() + "-" + plan.getGidThird());
         } else {
             plan.setGidFirst(getSubstring(plan.getGidFirst()) + "-" + getSubstring(plan.getGidThird()));
@@ -81,7 +81,7 @@ public class PlanCreateService {
             throw new RuntimeException(type+"类型计划不存在");
         }
         //设置期号格式
-        if ("bjpk10".equals(gameKey)||"1304".equals(gameKey)) {
+        if ("bjpk10".equals(gameKey)||"1304".equals(gameKey)||"1306".equals(gameKey)) {
             before.setGidFirst(before.getGidFirst() + "-" + before.getGidThird());
         } else {
             before.setGidFirst(getSubstring(before.getGidFirst()) + "-" + getSubstring(before.getGidThird()));

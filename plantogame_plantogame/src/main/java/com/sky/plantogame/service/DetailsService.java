@@ -68,7 +68,7 @@ public class DetailsService {
         for (int i = 0; i < split.length; i++) {
             Integer e = Integer.valueOf(split[i]);
             integers.add(e);
-            if ("ssc".equals(gameKey) || "1008".equals(gameKey) || "1009".equals(gameKey)) {
+            if ("ssc".equals(gameKey) || "1008".equals(gameKey)) {
                 numb.add(new Num(i, e));
             } else {
                 numb.add(new Num(i + 1, e));
@@ -134,7 +134,7 @@ public class DetailsService {
         } else if ("yesterdaybefore".equals(dataType)) {
             lotteryList = detailsDao.findByDateAndGamekey(gameKey, -2);
         }
-        if ("bjpk10".equals(gameKey) || "metpk10".equals(gameKey) || "1304".equals(gameKey)) {
+        if ("bjpk10".equals(gameKey) || "metpk10".equals(gameKey) || "1304".equals(gameKey) || "1306".equals(gameKey)) {
             int[][] zero = new int[10][size]; // 存放本次查询冠军位纵向的0到9位出现的所有数字。
             int[][] one = new int[10][size];
             int[][] tow = new int[10][size];
@@ -149,7 +149,7 @@ public class DetailsService {
             arrayInit(lotteryList, zero, one, tow, three, four, five, six, seven, eight, nine);
             //获取统计结果
             result = resultAdd(gameKey, size, zero, one, tow, three, four, five, six, seven, eight, nine);
-        } else if ("ssc".equals(gameKey) || "1009".equals(gameKey) || "1008".equals(gameKey)) {
+        } else if ("ssc".equals(gameKey) || "1008".equals(gameKey)||"1009".equals(gameKey)) {
             int[][] zero = new int[10][size]; // 存放本次查询冠军位纵向的0到9位出现的所有数字。
             int[][] one = new int[10][size];
             int[][] tow = new int[10][size];
