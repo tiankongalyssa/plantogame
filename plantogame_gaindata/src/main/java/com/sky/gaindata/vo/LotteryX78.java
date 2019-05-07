@@ -2,6 +2,9 @@ package com.sky.gaindata.vo;
 
 import java.util.Date;
 
+/**
+ * x78彩票记录类
+ */
 public class LotteryX78 {
     private String lotteryCode;
     private String issue;

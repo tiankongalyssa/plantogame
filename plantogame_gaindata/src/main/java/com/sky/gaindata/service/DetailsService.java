@@ -26,26 +26,28 @@ public class DetailsService {
     }
 
     /**
-     * 根据gamekey查询上期开奖结果
+     * 查询上期开奖结果
      *
-     * @param gameKey gameKey
-     * @return Details
+     * @param gameKey 游戏名
+     * @return 详细记录
      */
     public Details findBeforeByGameKey(String gameKey) {
         return detailsDao.findByGamekey(gameKey);
     }
 
     /**
-     * 增加
+     * 增加详细记录
      *
      * @param details details
      */
     public void add(Details details) {
         Details info = detailsDao.findByGamekeyAndGid(details.getGamekey(), details.getGid());
-        if (info == null) {
-            details.setId(idWorker.nextId() + ""); // 雪花分布式ID生成器
-            details.setCreateTime(new Date());
-            detailsDao.save(details);
+        // 查询本期记录是否存在不存在则保存记录
+        if (info != null) {
+            return;
         }
+        details.setId(idWorker.nextId() + ""); // 雪花分布式ID生成器
+        details.setCreateTime(new Date());
+        detailsDao.save(details);
     }
 }
