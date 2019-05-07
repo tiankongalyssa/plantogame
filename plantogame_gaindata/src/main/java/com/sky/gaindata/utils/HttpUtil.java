@@ -27,7 +27,7 @@ public class HttpUtil extends BaseWork {
 
         String uri;
         if (urlList.contains(lottCode)) {
-            uri = "http://www.x78cc.com/v1/lottery/openResult?lotteryCode1=" + lottCode + "&dataNum=" + rows + "&";
+            uri = "http://www.x78cc.com/v1/lottery/openResult?lotteryCode=" + lottCode + "&dataNum=" + rows + "&";
         } else {
             uri = "http://api.caipiaoapi.com/hall/nodeService/api_request?gamekey=" + lottCode + "&count=" + rows + "&uid=330&time=1540179556&md5=f7ab80d949a4e60bcd1590c31060b6d4&api=apiGameInfo&site=api.jiekouapi.com&tdsourcetag=s_pcqq_aiomsg";
         }
