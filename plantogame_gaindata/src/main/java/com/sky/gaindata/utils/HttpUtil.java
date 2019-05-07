@@ -49,7 +49,7 @@ public class HttpUtil extends BaseWork {
                     Integer integer = flagmap.get(lottCode);
                     flagmap.put(lottCode, (flagmap.get(lottCode) == null ? 0 : integer) + 1);
                     Integer flagCount = flagmap.get(lottCode);
-                    System.out.println("计数:" + flagCount);
+                    System.out.println("countNum:" + flagCount);
                    if(flagCount>3){
                        flagmap.put(lottCode, 0);
                        return null;
