@@ -56,6 +56,10 @@ public class HttpUtil extends BaseWork {
                    }
                     in = new BufferedReader(new InputStreamReader(conn.getInputStream(), StandardCharsets.UTF_8));
                     str = in.readLine();
+                    if(str==null){
+                        System.out.println("读取数据为空");
+                        return null;
+                    }
                     if (!str.matches(".*openTime.*")) { //如果str不包含gid则说明数据返回失败.
                         System.out.println(lottCode + " has error");
                         int count = 0;

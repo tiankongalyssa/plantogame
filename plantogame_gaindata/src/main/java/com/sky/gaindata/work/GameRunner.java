@@ -112,6 +112,7 @@ public class GameRunner extends BaseWork implements ApplicationRunner {
     private void handlerGame(String gameKey) {
         try {
             //请求接口转换为java对象
+            System.out.println("getForeignData:"+gameKey);
             String foreignData = HttpUtil.getForeignData(gameKey, 1);
             if(foreignData==null){
                 System.out.println("数据为空");
