@@ -6,10 +6,8 @@ import com.sky.gaindata.dao.TotalDao;
 import com.sky.gaindata.pojo.*;
 import com.sky.gaindata.service.*;
 import com.sky.gaindata.utils.HttpUtil;
-import com.sky.gaindata.vo.GuanYa;
-import com.sky.gaindata.vo.Lottery;
-import com.sky.gaindata.vo.LotteryX78;
-import com.sky.gaindata.vo.Total;
+import com.sky.gaindata.vo.*;
+import info.BaseWork;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
@@ -112,7 +110,6 @@ public class GameRunner extends BaseWork implements ApplicationRunner {
     private void handlerGame(String gameKey) {
         try {
             //请求接口转换为java对象
-            System.out.println("getForeignData:" + gameKey);
             String foreignData = HttpUtil.getForeignData(gameKey, 1);
             if (foreignData == null) {
                 System.out.println("handlerGame():" + gameKey + "数据为空");
@@ -143,7 +140,8 @@ public class GameRunner extends BaseWork implements ApplicationRunner {
 
     private void saveData(LotteryRecord lotteryRecord) {
         lotteryRecordService.add(lotteryRecord); //记录
-        if ("1407".equals(lotteryRecord.getGamekey())) {
+        //大发类型的彩种
+        if (dfType.contains(lotteryRecord.getGamekey())) {
             K3 byGameKey = k3Service.findByGameKey(lotteryRecord.getGamekey());
             K3 k3 = new K3(lotteryRecord);
             k3.setNumTrend(getNumTrend(byGameKey, lotteryRecord));
@@ -167,7 +165,7 @@ public class GameRunner extends BaseWork implements ApplicationRunner {
 
     private LotteryRecord jsonToLotteryRecord(String gameKey, String data) {
         LotteryRecord lotteryRecord;
-        if (urlList.contains(gameKey)) { //如果是x78接口
+        if (x78InterfaceList.contains(gameKey)) { //如果是x78接口
             LotteryX78 lotteryX78 = JSONObject.parseObject(data).getJSONArray("data").getJSONObject(0).toJavaObject(LotteryX78.class);
             lotteryRecord = new LotteryRecord(lotteryX78);
             //下期期号和开奖时间
@@ -175,6 +173,15 @@ public class GameRunner extends BaseWork implements ApplicationRunner {
             lotteryRecord.setNextOpenIssue(nextOpenIssue);
             Date nextOpenTime = getNextOpenTime(lotteryX78.getOpenTime(), lotteryX78.getLotteryCode());
             lotteryRecord.setNextOpenTime(nextOpenTime);
+        } else if (dfInterfaceList.contains(gameKey)) {
+            LotteryDf lotteryDf = JSONObject.parseObject(data).getJSONArray("data").getJSONObject(0).toJavaObject(LotteryDf.class);
+            lotteryRecord = new LotteryRecord(lotteryDf);
+            lotteryRecord.setGamekey(gameKey);
+            lotteryRecord.setNextOpenIssue(getThreeIssue(lotteryDf.getExpect())[1]);//下期期号
+            lotteryRecord.setNextOpenTime(getNextOpenTime(lotteryDf.getOpentime(), gameKey));// 下期开奖时间
+            if ("JLPK10".equals(gameKey) || "TSPK10".equals(gameKey)) {  //需要将开奖数字格式化 数字前补0
+                lotteryRecord.setAward(formatAdd0(lotteryDf.getOpencode()));
+            }
         } else {
             Lottery lottery = JSONObject.parseObject(data).getJSONObject("result").getJSONObject("data").toJavaObject(Lottery.class);
             lotteryRecord = new LotteryRecord(lottery);
@@ -183,21 +190,31 @@ public class GameRunner extends BaseWork implements ApplicationRunner {
         return lotteryRecord;
     }
 
-    private Date getNextOpenTime(Date openTime, String lotteryCode) {
-        //如果彩种多可以声明为静态 这里只有1009是5分钟所有直接判断
-//        List<String> every5minutes = new ArrayList<>();
-//        every5minutes.add("1009");
-//        List<String> every1minutes = new ArrayList<>();
-//        every1minutes.add("1008");
-//        every1minutes.add("1304");
-//        every1minutes.add("1407");
-        int num = "1306".equals(lotteryCode) ? 5 : 1;
+    private String formatAdd0(String data) {
+        StringBuilder sb = new StringBuilder();
+        String[] split = data.split(",");
+        for (String s : split) {
+            sb.append(String.format("%02d", Integer.valueOf(s))).append(",");
+        }
+        return sb.substring(0, sb.length() - 1);
+    }
+
+    private Date getNextOpenTime(Date openTime, String gameKey) {
+        // 设置下期开始时间
+        int num = 1;
+        // 5分一期
+        if ("1306".equals(gameKey)) {
+            num = 5;
+            //3分一期
+        } else if ("TSPK10".equals(gameKey)) {
+            num = 3;
+        }
         return new Date(openTime.getTime() + 1000 * 60 * num);
     }
 
     private void saveGuanYaLongHu(LotteryRecord lottery) {
         //保存龙虎  否则保存冠亚
-        if ("ssc".equals(lottery.getGamekey()) || "1008".equals(lottery.getGamekey()) || "1009".equals(lottery.getGamekey()) || "1407".equals(lottery.getGamekey())) {
+        if (longHuType.contains(lottery.getGamekey())) {
             Total total = new Total();
             Date createDate = new Date();
             StringBuilder builder = new StringBuilder();
@@ -207,7 +224,8 @@ public class GameRunner extends BaseWork implements ApplicationRunner {
             total.setCreateTime(createDate);
             total.setGamekey(lottery.getGamekey());
             String[] info = GameHandler.getGuanYa(lottery);
-            if ("1407".equals(lottery.getGamekey())) {
+            //如果是大发彩种
+            if (dfType.contains(lottery.getGamekey())) {
                 //总和
                 total.setTotal(builder.append(info[0]).append(",").append(info[1]).append(",").append(info[2]).toString());
                 builder.setLength(0);
@@ -278,7 +296,8 @@ public class GameRunner extends BaseWork implements ApplicationRunner {
         // 检查是否猜中
         Map<String, Object> map;
         int totalNum = 0;
-        if ("1407".equals(lotteryRecord.getGamekey())) {
+        //如果是大发类型的彩种则
+        if (dfType.contains(lotteryRecord.getGamekey())) {
             //获取本期开奖总和
             int total = CommonUtils.getTotal(CommonUtils.getIntOfAward(lotteryRecord.getAward()));
             totalNum = total;
@@ -327,7 +346,7 @@ public class GameRunner extends BaseWork implements ApplicationRunner {
     }
 
     private void setMyriaAward(LotteryRecord lotteryRecord, PlanCreate plan, int totalNum) {
-        if ("1407".equals(lotteryRecord.getGamekey())) {
+        if (dfType.contains(lotteryRecord.getGamekey())) {
             plan.setMyriaAward(totalNum > 10 ? "大" : "小");
         } else {
             plan.setMyriaAward(GameHandler.getMyriaAward(lotteryRecord.getAward()));
@@ -544,7 +563,6 @@ public class GameRunner extends BaseWork implements ApplicationRunner {
             beforArray = CommonUtils.getIntOfAward(beforRecord);
         }
         //每位数字加1
-//        System.out.println("每位数字加1");
         for (int i = 0; i < beforArray.length; i++) {
             beforArray[i]++;
         }

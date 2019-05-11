@@ -1,6 +1,6 @@
 package com.sky.gaindata.utils;
 
-import com.sky.gaindata.work.BaseWork;
+import info.BaseWork;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -24,10 +24,22 @@ public class HttpUtil extends BaseWork {
      * @throws IOException IOException
      */
     public synchronized static String getForeignData(String lottCode, int rows) throws IOException {
-
+        //如果是大发接口  睡眠3.2秒再请求
+        if (dfInterfaceList.contains(lottCode)) {
+            try {
+                Thread.sleep(3200);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
         String uri;
-        if (urlList.contains(lottCode)) {
+        if (x78InterfaceList.contains(lottCode)) {
             uri = "http://www.x78cc.com/v1/lottery/openResult?lotteryCode=" + lottCode + "&dataNum=" + rows + "&";
+        } else if (dfInterfaceList.contains(lottCode)) {
+            //测试
+            // uri = "http://abawardopen.com/newly.do?token=7xEW2FXNQaMddAAmqocV&rows=" + rows + "&format=json&code=" + lottCode;
+            //线上
+            uri = "http://abawardopen.com/newly.do?token=jLYGmFykCSDn8tTYU7CW&rows=" + rows + "&format=json&code=" + lottCode;
         } else {
             uri = "http://api.caipiaoapi.com/hall/nodeService/api_request?gamekey=" + lottCode + "&count=" + rows + "&uid=330&time=1540179556&md5=f7ab80d949a4e60bcd1590c31060b6d4&api=apiGameInfo&site=api.jiekouapi.com&tdsourcetag=s_pcqq_aiomsg";
         }
@@ -36,10 +48,9 @@ public class HttpUtil extends BaseWork {
         //输入流
         BufferedReader in = null;
         String str = null;
-        rows = rows <= 0 ? 1 : rows;
         URL url = new URL(uri);
         try {
-            while ((str == null) || !str.matches(".*openTime.*")) {
+            while ((str == null) || str.matches(".*openTime.*") & str.matches(".*opentime.*")) {
                 url.openConnection();
                 conn = url.openConnection();
 //                conn.addRequestProperty("api-token","TdPBrjxzpL+IFtIAv8q3Wp+IoROQNdD/wtmyABjbha4="); //添加消息头  使用php接口时添加
@@ -49,18 +60,18 @@ public class HttpUtil extends BaseWork {
                     Integer integer = flagmap.get(lottCode);
                     flagmap.put(lottCode, (flagmap.get(lottCode) == null ? 0 : integer) + 1);
                     Integer flagCount = flagmap.get(lottCode);
-                    System.out.println("countNum:" + flagCount);
-                   if(flagCount>3){
-                       flagmap.put(lottCode, 0);
-                       return null;
-                   }
+                    if (flagCount > 3) {
+                        flagmap.put(lottCode, 0);
+                        return null;
+                    }
+                    System.out.println(uri);
                     in = new BufferedReader(new InputStreamReader(conn.getInputStream(), StandardCharsets.UTF_8));
                     str = in.readLine();
-                    if(str==null){
+                    if (str == null) {
                         System.out.println("读取数据为空");
                         return null;
                     }
-                    if (!str.matches(".*openTime.*")) { //如果str不包含gid则说明数据返回失败.
+                    if (!str.matches(".*opentime.*") & !str.matches(".*openTime.*")) { //如果str不包含gid则说明数据返回失败.
                         System.out.println(lottCode + " has error");
                         int count = 0;
                         while (count < 5) {
@@ -70,6 +81,7 @@ public class HttpUtil extends BaseWork {
                         }
                     }
                 } catch (InterruptedException | IOException e) {
+                    e.printStackTrace();
                     System.out.println("连接异常");
                     return null;
                 }
@@ -82,7 +94,6 @@ public class HttpUtil extends BaseWork {
             } catch (InterruptedException e1) {
                 e1.printStackTrace();
             }
-//            str = getForeignData(lottCode, rows);
             return null;
         } finally {
             if (in != null) {

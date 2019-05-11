@@ -2,6 +2,7 @@ package com.sky.gaindata.work;
 
 import com.sky.gaindata.pojo.LotteryRecord;
 import com.sky.gaindata.pojo.PlanCreate;
+import info.BaseWork;
 import utils.CommonUtils;
 
 import java.text.DecimalFormat;
@@ -25,7 +26,7 @@ public class GameHandler extends BaseWork {
             return null;
         }
         if (strNum == null) {  //判断前期记录格式
-            if ("1407".equals(gameKey)) { //大发快3 只开6个数字
+            if (dfType.contains(gameKey)) { //大发快3 只开6个数字
                 strNum = "0,0,0,0,0,0";
             } else {
                 strNum = "0,0,0,0,0,0,0,0,0,0";
@@ -44,11 +45,11 @@ public class GameHandler extends BaseWork {
         }
         num = Integer.valueOf(goalNum); //将开奖数字转换为int
         //不会出现0的彩种
-        boolean b = "bjpk10".equals(gameKey) || "metpk10".equals(gameKey) || "1304".equals(gameKey) || "1306".equals(gameKey)|| "1407".equals(gameKey);
+        boolean contains = code1To10.contains(gameKey);
         //将上期数字重置为1
         if (beforeGoalNum != null) {
             Integer beforePlace = Integer.valueOf(beforeGoalNum);
-            if (b) {
+            if (contains) {
                 data[beforePlace - 1] = 1;
             } else {
                 data[beforePlace] = 1;
@@ -56,7 +57,7 @@ public class GameHandler extends BaseWork {
         }
         //设置本期开奖数字
         try {
-            if (b) {
+            if (contains) {
                 data[num - 1] = 0;
             } else {
                 data[num] = 0;
@@ -107,13 +108,13 @@ public class GameHandler extends BaseWork {
         HashSet<String> integers = new HashSet<>();
         Random random = new Random();
         int e;
-        //这3个彩种是0-9
-        if ("ssc".equals(gameKey) || "1008".equals(gameKey) || "1009".equals(gameKey)) {
+        //0-9的彩种
+        if (code0To9.contains(gameKey)) {
             while (integers.size() < 5) {
                 integers.add(random.nextInt(10) + "");
             }
             //如果是大发快3 则只计划大小
-        } else if ("1407".equals(gameKey)) {
+        } else if (dfType.contains(gameKey)) {
             boolean b = random.nextInt(100) % 2 == 0;
             integers.add(b ? "大" : "小");
         } else {
@@ -127,7 +128,7 @@ public class GameHandler extends BaseWork {
         }
         String result;
         StringBuilder str = new StringBuilder();
-        if (!"1407".equals(gameKey)) {
+        if (!dfType.contains(gameKey)) {
             for (String integer : integers) {
                 str.append(integer).append(",");
             }
@@ -171,7 +172,7 @@ public class GameHandler extends BaseWork {
         //检查当前期是否在三期内，如果是分别为1，2，3如果不是 则为0
         int win = gid.equals(plan.getGidFirst()) ? 1 : gid.equals(plan.getGidSecond()) ? 2 : 3;
         boolean flag = false;
-        if ("1407".equals(gameKey)) {
+        if (dfType.contains(gameKey)) {
             String str = award > 10 ? "大" : "小";
             flag = plan.getMyriaPlane().equals(str);
         } else {
@@ -192,7 +193,7 @@ public class GameHandler extends BaseWork {
 
     static String[] getGuanYa(LotteryRecord lottery) {
         String[] result;
-        if ("ssc".equals(lottery.getGamekey()) || "1008".equals(lottery.getGamekey()) || "1009".equals(lottery.getGamekey()) || "1407".equals(lottery.getGamekey())) {
+        if (longHuType.contains(lottery.getGamekey())) {
             result = new String[17];
             int[] award = CommonUtils.getIntOfAward(lottery.getAward());
             int total = CommonUtils.getTotal(award);
@@ -200,7 +201,7 @@ public class GameHandler extends BaseWork {
             result[0] = total + "";
             result[2] = getOdd(total); //单双
             //大发快3 没有只位开奖数字
-            if ("1407".equals(lottery.getGamekey())) {
+            if (dfType.contains(lottery.getGamekey())) {
                 result[1] = getSize(total, 10); //大小    大发快3 总和与10相比
                 result[3] = getSize(award[0], 5); //大小
                 result[4] = getSize(award[1], 5); //大小
