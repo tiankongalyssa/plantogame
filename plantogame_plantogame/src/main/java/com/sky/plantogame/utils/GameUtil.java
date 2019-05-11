@@ -2,11 +2,12 @@ package com.sky.plantogame.utils;
 
 import com.sky.plantogame.vo.Analysis;
 import com.sky.plantogame.vo.AnalysisResult;
+import info.BaseWork;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class GameUtil {
+public class GameUtil extends BaseWork {
     /**
      * 统计某一位数字出现的情况
      *
@@ -18,7 +19,7 @@ public class GameUtil {
      */
     public static List<Analysis> disposeOne(int[][] ints, int place, Integer size, String gameKey) {
         List<Analysis> result = new ArrayList<>();
-        int num = "1407".equals(gameKey) ? 6 : 10;
+        int num = dfType.contains(gameKey) ? 6 : 10;
         int[][] array = new int[num][4];
         for (int i = 0; i < num; i++) {
             int max = 0;           //最大遗漏
@@ -52,7 +53,7 @@ public class GameUtil {
         }
         //存入集合
         for (int i = 0; i < num; i++) {
-            int flag = "1407".equals(gameKey) ? i + 1 : i;
+            int flag = dfType.contains(gameKey) ? i + 1 : i;
             Analysis analysis = new Analysis();
             analysis.setAppear(array[i][0]);
             analysis.setSuccession(array[i][1]);

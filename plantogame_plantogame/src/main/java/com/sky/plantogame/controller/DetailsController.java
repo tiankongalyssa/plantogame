@@ -21,7 +21,7 @@ import org.springframework.web.bind.annotation.*;
 @CrossOrigin
 @RequestMapping("/details")
 @EnableAsync
-public class DetailsController {
+public class DetailsController  extends BaseController{
 
     private final DetailsService detailsService;
     private final K3Service k3Service;
@@ -68,7 +68,8 @@ public class DetailsController {
      */
     @GetMapping("/{gameKey}/{dateType}/{page}/{size}")
     public Result findDetailsList(@PathVariable String dateType, @PathVariable String gameKey, @PathVariable int page, @PathVariable int size) {
-        if ("1407".equals(gameKey)) {
+        // 如果是大发彩种
+        if (dfType.contains(gameKey)) {
             Page<K3> pageList = k3Service.findK3List(gameKey, dateType, page, size);
             return new Result(true, StatusCode.OK, "查询成功", new PageResult<>(pageList.getTotalElements(), pageList.getContent()));
         } else {

@@ -80,9 +80,7 @@ public class K3Service {
             for (int j = 0; j < k3List.size(); j++) {
                 K3 k3 = k3List.get(j);
                 int[] numTrend = CommonUtils.getIntOfAward(k3.getNumTrend());
-//                int[] numForm = CommonUtils.getIntOfAward(k3.getNumForm());
                 numTrendArray[i][j] = numTrend[i];
-//                numFormArray[i][j] = numForm[i];
             }
         }
 

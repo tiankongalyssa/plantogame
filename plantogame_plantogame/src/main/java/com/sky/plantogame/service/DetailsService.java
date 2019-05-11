@@ -6,6 +6,7 @@ import com.sky.plantogame.utils.GameUtil;
 import com.sky.plantogame.vo.AnalysisResult;
 import com.sky.plantogame.vo.HotCool;
 import com.sky.plantogame.vo.Num;
+import info.BaseWork;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -22,7 +23,7 @@ import java.util.List;
  * @author Administrator
  */
 @Service
-public class DetailsService {
+public class DetailsService extends BaseWork {
 
     private final DetailsDao detailsDao;
 
@@ -38,7 +39,7 @@ public class DetailsService {
         List<HotCool> list = new ArrayList<>();
         //获取指定游戏的统计数据
         List<AnalysisResult> analysis = getAnalysis(gameKey, "near", size);
-        if ("1407".equals(gameKey)) {
+        if (dfType.contains(gameKey)) {
             HotCool e = oneHotCool(analysis.get(0).getAppear(), 1, gameKey, GameUtil.getStrings(gameKey));
             e.setPlace("冷热数字");
             list.add(e);
@@ -68,7 +69,7 @@ public class DetailsService {
         for (int i = 0; i < split.length; i++) {
             Integer e = Integer.valueOf(split[i]);
             integers.add(e);
-            if ("ssc".equals(gameKey) || "1008".equals(gameKey)) {
+            if (sscType.contains(gameKey)) {
                 numb.add(new Num(i, e));
             } else {
                 numb.add(new Num(i + 1, e));
@@ -115,7 +116,7 @@ public class DetailsService {
             throw new RuntimeException("size参数错误");
         }
         List<AnalysisResult> result;
-        if ("1407".equals(gameKey)) {
+        if (dfType.contains(gameKey)) {
             result = k3Service.processK3(gameKey, dataType, size);
         } else {
             result = process(gameKey, dataType, size);
@@ -134,7 +135,8 @@ public class DetailsService {
         } else if ("yesterdaybefore".equals(dataType)) {
             lotteryList = detailsDao.findByDateAndGamekey(gameKey, -2);
         }
-        if ("bjpk10".equals(gameKey) || "metpk10".equals(gameKey) || "1304".equals(gameKey) || "1306".equals(gameKey)) {
+        System.out.println(gameKey);
+        if (code1To10.contains(gameKey)) {
             int[][] zero = new int[10][size]; // 存放本次查询冠军位纵向的0到9位出现的所有数字。
             int[][] one = new int[10][size];
             int[][] tow = new int[10][size];
@@ -149,7 +151,7 @@ public class DetailsService {
             arrayInit(lotteryList, zero, one, tow, three, four, five, six, seven, eight, nine);
             //获取统计结果
             result = resultAdd(gameKey, size, zero, one, tow, three, four, five, six, seven, eight, nine);
-        } else if ("ssc".equals(gameKey) || "1008".equals(gameKey)||"1009".equals(gameKey)) {
+        } else if (code0To9.contains(gameKey)) {
             int[][] zero = new int[10][size]; // 存放本次查询冠军位纵向的0到9位出现的所有数字。
             int[][] one = new int[10][size];
             int[][] tow = new int[10][size];

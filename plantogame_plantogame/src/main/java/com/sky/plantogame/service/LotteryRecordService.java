@@ -6,6 +6,7 @@ import com.sky.plantogame.pojo.PlanCreate;
 import com.sky.plantogame.pojo.SonOfLotteryRecord;
 import com.sky.plantogame.utils.GameUtil;
 import com.sky.plantogame.vo.ChangLong;
+import info.BaseWork;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
@@ -20,7 +21,7 @@ import java.util.concurrent.TimeUnit;
  * @author Administrator
  */
 @Service
-public class LotteryRecordService {
+public class LotteryRecordService extends BaseWork {
 
     private final LotteryRecordDao lotteryRecordDao;
     private static Map<String, ChangLong> changLongMap;
@@ -59,7 +60,7 @@ public class LotteryRecordService {
                 list.add(value);
             }
         }
-        if ("1407".equals(gameKey)) {
+        if (dfType.contains(gameKey)) {
             for (ChangLong c : list) {
                 c.setSite("和值");
             }
@@ -165,7 +166,7 @@ public class LotteryRecordService {
      */
     private Map<String, ChangLong> awardToMap(String gameKey, int[] awardNum, String type, String[] msg) {
         Map<String, ChangLong> map = new HashMap<>();
-        if ("1407".equals(gameKey)) {
+        if (dfType.contains(gameKey)) {
             int total = CommonUtils.getTotal(awardNum);
             ChangLong value = initChangLong(gameKey, total);
             map.put(type + 0, value);
@@ -186,7 +187,7 @@ public class LotteryRecordService {
         changLong.setNameFlag(true);
         changLong.setTypeFlag(true);
         changLong.setName(i % 2 == 0 ? "双" : "单");
-        int num = "1407".equals(gameKey) ? 10 : 5;
+        int num = dfType.contains(gameKey) ? 10 : 5;
         changLong.setType(i > num ? "大" : "小");
         return changLong;
     }

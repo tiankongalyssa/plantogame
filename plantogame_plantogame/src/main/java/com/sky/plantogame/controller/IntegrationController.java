@@ -4,7 +4,6 @@ import com.sky.plantogame.service.IntegrationService;
 import entity.Result;
 import entity.StatusCode;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.web.bind.annotation.*;
 
@@ -15,7 +14,7 @@ import org.springframework.web.bind.annotation.*;
 @CrossOrigin
 @RequestMapping("/synthesizes")
 @EnableAsync
-public class IntegrationController {
+public class IntegrationController extends BaseController {
     private final IntegrationService integrationService;
 
     @Autowired
@@ -31,7 +30,8 @@ public class IntegrationController {
      */
     @GetMapping("/{gameKey}")
     public Result findGuanYaList(@PathVariable String gameKey) {
-        if ("ssc".equals(gameKey) || "1008".equals(gameKey) || "1009".equals(gameKey) || "1407".equals(gameKey)) {
+        //如果是龙虎彩种
+        if (longHuType.contains(gameKey)) {
             return new Result(true, StatusCode.OK, "查询成功", integrationService.findTotalList(gameKey));
         } else {
             return new Result(true, StatusCode.OK, "查询成功", integrationService.findGuanYaList(gameKey));

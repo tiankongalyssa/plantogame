@@ -95,6 +95,4 @@ public class PlanCreateService {
     private String getSubstring(String str) {
         return str.substring(str.length() - 3);
     }
-
-
 }
