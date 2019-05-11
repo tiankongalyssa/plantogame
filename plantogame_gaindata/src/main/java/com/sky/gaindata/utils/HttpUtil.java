@@ -64,7 +64,6 @@ public class HttpUtil extends BaseWork {
                         flagmap.put(lottCode, 0);
                         return null;
                     }
-                    System.out.println(uri);
                     in = new BufferedReader(new InputStreamReader(conn.getInputStream(), StandardCharsets.UTF_8));
                     str = in.readLine();
                     if (str == null) {
