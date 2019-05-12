@@ -211,7 +211,7 @@ public class GameHandler extends BaseWork {
                 result[8] = getOdd(award[2]); //单双
                 result[9] = getStraight(award[0], award[1], award[2]); //前三
             } else {
-                result[1] = getSize(total, 5); //大小  其余的都是与5相比
+                result[1] = getSize(total, sscType.contains(lottery.getGamekey()) ? 22 : 5); //大小  ssc与22相比较 其于与5相比较
                 result[3] = getLongHumsg(award[0], award[4]); //龙虎
                 //大小,单双
                 for (int i = 0; i < award.length; i++) {
