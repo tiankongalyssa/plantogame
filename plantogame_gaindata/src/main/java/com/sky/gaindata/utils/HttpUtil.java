@@ -35,6 +35,8 @@ public class HttpUtil extends BaseWork {
         String uri;
         if (x78InterfaceList.contains(lottCode)) {
             uri = "http://www.x78cc.com/v1/lottery/openResult?lotteryCode=" + lottCode + "&dataNum=" + rows + "&";
+        } else if (k22InterfaceList.contains(lottCode)) {
+            uri = "https://k22aa.com/v/lottery/openInfo?gameId=" + lottCode;
         } else if (dfInterfaceList.contains(lottCode)) {
             //测试
             // uri = "http://abawardopen.com/newly.do?token=7xEW2FXNQaMddAAmqocV&rows=" + rows + "&format=json&code=" + lottCode;

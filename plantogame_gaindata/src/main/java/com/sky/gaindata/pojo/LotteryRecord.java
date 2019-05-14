@@ -2,6 +2,7 @@ package com.sky.gaindata.pojo;
 
 import com.sky.gaindata.vo.Lottery;
 import com.sky.gaindata.vo.LotteryDf;
+import com.sky.gaindata.vo.LotteryK22;
 import com.sky.gaindata.vo.LotteryX78;
 
 import javax.persistence.Entity;
@@ -32,21 +33,30 @@ public class LotteryRecord implements Serializable {
     private Date createTime;//创建时间
 
     //此构造函数不可去掉  去掉的话JPA报错  No default constructor for entity:
-    public LotteryRecord(){
+    public LotteryRecord() {
 
     }
-    public LotteryRecord(LotteryDf lotteryDf){
+
+    public LotteryRecord(LotteryK22 lotteryDf) {
+        this.gid = lotteryDf.getTurnNum();
+        this.award = lotteryDf.getOpenNum();
+        this.openTime = lotteryDf.getOpenTime();
+    }
+
+    public LotteryRecord(LotteryDf lotteryDf) {
         this.gid = lotteryDf.getExpect();
         this.award = lotteryDf.getOpencode();
         this.openTime = lotteryDf.getOpentime();
     }
-    public LotteryRecord(LotteryX78 lotteryX78){
+
+    public LotteryRecord(LotteryX78 lotteryX78) {
         this.gid = lotteryX78.getIssue();
         this.award = lotteryX78.getOpenNumber();
         this.openTime = lotteryX78.getOpenTime();
         this.gamekey = lotteryX78.getLotteryCode();
         this.serverTime = lotteryX78.getCreatedTime();
     }
+
     public LotteryRecord(Lottery lottery) {
         this.gid = lottery.getOpenIssue();
         this.award = lottery.getOpenResult();

@@ -131,7 +131,7 @@ public class GameRunner extends BaseWork implements ApplicationRunner {
             //获取下次开奖时间
             putTime(lotteryRecord);
             System.out.println("TYPE:" + lotteryRecord.getGamekey() + " Next Open Time:" + lotteryRecord.getNextOpenTime());
-            //安排计划数据
+//            //安排计划数据
             createPlan(lotteryRecord);
         } catch (IOException e) {
             e.printStackTrace();
@@ -159,8 +159,8 @@ public class GameRunner extends BaseWork implements ApplicationRunner {
 
     private void createPlan(LotteryRecord lotteryRecord) {
         savePlan(lotteryRecord, "create");
-        savePlan(lotteryRecord, "dream");
-        savePlan(lotteryRecord, "volcano");
+//        savePlan(lotteryRecord, "dream");
+//        savePlan(lotteryRecord, "volcano");
     }
 
     private LotteryRecord jsonToLotteryRecord(String gameKey, String data) {
@@ -171,12 +171,20 @@ public class GameRunner extends BaseWork implements ApplicationRunner {
             //下期期号和开奖时间
             String nextOpenIssue = getThreeIssue(lotteryX78.getIssue())[1];
             lotteryRecord.setNextOpenIssue(nextOpenIssue);
-            Date nextOpenTime = getNextOpenTime(lotteryX78.getOpenTime(), lotteryX78.getLotteryCode());
+            Date nextOpenTime = getNextOpenTime(lotteryX78.getOpenTime(), gameKey);
             lotteryRecord.setNextOpenTime(nextOpenTime);
+        } else if (k22InterfaceList.contains(gameKey)) {
+            LotteryK22 lotteryK22 = ((JSONObject) JSONObject.parseObject(data).get("pre")).toJavaObject(LotteryK22.class);
+            lotteryRecord = new LotteryRecord(lotteryK22);
+            lotteryRecord.setGamekey(gameKey);
+            //下期期号和开奖时间
+            lotteryRecord.setNextOpenIssue(getThreeIssue(lotteryK22.getTurnNum())[1]);
+            lotteryRecord.setNextOpenTime(getNextOpenTime(lotteryK22.getOpenTime(), gameKey));
         } else if (dfInterfaceList.contains(gameKey)) {
             LotteryDf lotteryDf = JSONObject.parseObject(data).getJSONArray("data").getJSONObject(0).toJavaObject(LotteryDf.class);
             lotteryRecord = new LotteryRecord(lotteryDf);
             lotteryRecord.setGamekey(gameKey);
+            //下期期号和开奖时间
             lotteryRecord.setNextOpenIssue(getThreeIssue(lotteryDf.getExpect())[1]);//下期期号
             lotteryRecord.setNextOpenTime(getNextOpenTime(lotteryDf.getOpentime(), gameKey));// 下期开奖时间
             if ("JLPK10".equals(gameKey) || "TSPK10".equals(gameKey)) {  //需要将开奖数字格式化 数字前补0
@@ -206,7 +214,7 @@ public class GameRunner extends BaseWork implements ApplicationRunner {
         if ("1306".equals(gameKey)) {
             num = 5;
             //3分一期
-        } else if ("TSPK10".equals(gameKey)) {
+        } else if ("TSPK10".equals(gameKey) || "46".equals(gameKey)) {
             num = 3;
         }
         return new Date(openTime.getTime() + 1000 * 60 * num);
