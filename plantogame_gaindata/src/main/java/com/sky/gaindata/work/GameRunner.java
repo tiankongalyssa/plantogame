@@ -159,8 +159,8 @@ public class GameRunner extends BaseWork implements ApplicationRunner {
 
     private void createPlan(LotteryRecord lotteryRecord) {
         savePlan(lotteryRecord, "create");
-//        savePlan(lotteryRecord, "dream");
-//        savePlan(lotteryRecord, "volcano");
+        savePlan(lotteryRecord, "dream");
+        savePlan(lotteryRecord, "volcano");
     }
 
     private LotteryRecord jsonToLotteryRecord(String gameKey, String data) {
