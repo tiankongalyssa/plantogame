@@ -26,31 +26,17 @@ public class HttpUtil extends BaseWork {
     public synchronized static String getForeignData(String lottCode, int rows) throws IOException {
         //如果是大发接口  睡眠3.2秒再请求
         if (dfInterfaceList.contains(lottCode)) {
-            try {
-                Thread.sleep(3200);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
+            sleep(3200);
         }
-        String uri;
-        if (x78InterfaceList.contains(lottCode)) {
-            uri = "http://www.x78cc.com/v1/lottery/openResult?lotteryCode=" + lottCode + "&dataNum=" + rows + "&";
-        } else if (k22InterfaceList.contains(lottCode)) {
-            uri = "https://k22aa.com/v/lottery/openInfo?gameId=" + lottCode;
-        } else if (dfInterfaceList.contains(lottCode)) {
-            //测试
-            // uri = "http://abawardopen.com/newly.do?token=7xEW2FXNQaMddAAmqocV&rows=" + rows + "&format=json&code=" + lottCode;
-            //线上
-            uri = "http://abawardopen.com/newly.do?token=jLYGmFykCSDn8tTYU7CW&rows=" + rows + "&format=json&code=" + lottCode;
-        } else {
-            uri = "http://api.caipiaoapi.com/hall/nodeService/api_request?gamekey=" + lottCode + "&count=" + rows + "&uid=330&time=1540179556&md5=f7ab80d949a4e60bcd1590c31060b6d4&api=apiGameInfo&site=api.jiekouapi.com&tdsourcetag=s_pcqq_aiomsg";
+        if (k22InterfaceList.contains(lottCode)) {
+            sleep(1000);
         }
         //网络的url地址
         URLConnection conn;
         //输入流
         BufferedReader in = null;
         String str = null;
-        URL url = new URL(uri);
+        URL url = new URL(getUrl(lottCode, rows));
         try {
             while ((str == null) || str.matches(".*openTime.*") & str.matches(".*opentime.*")) {
                 url.openConnection();
@@ -90,11 +76,7 @@ public class HttpUtil extends BaseWork {
         } catch (IOException e) {
             System.out.println("连接异常或返回数据不错误");
             e.printStackTrace();
-            try {
-                Thread.sleep(5000);
-            } catch (InterruptedException e1) {
-                e1.printStackTrace();
-            }
+            sleep(5000);
             return null;
         } finally {
             if (in != null) {
@@ -103,5 +85,30 @@ public class HttpUtil extends BaseWork {
         }
         flagmap.put(lottCode, 0);
         return str;
+    }
+
+    private static String getUrl(String lottCode, int rows) {
+        String uri;
+        if (x78InterfaceList.contains(lottCode)) {
+            uri = "http://www.x78cc.com/v1/lottery/openResult?lotteryCode=" + lottCode + "&dataNum=" + rows + "&";
+        } else if (k22InterfaceList.contains(lottCode)) {
+            uri = "https://k22aa.com/v/lottery/openInfo?gameId=" + lottCode;
+        } else if (dfInterfaceList.contains(lottCode)) {
+            //测试
+//            uri = "http://abawardopen.com/newly.do?token=7xEW2FXNQaMddAAmqocV&rows=" + rows + "&format=json&code=" + lottCode;
+//            线上
+            uri = "http://abawardopen.com/newly.do?token=jLYGmFykCSDn8tTYU7CW&rows=" + rows + "&format=json&code=" + lottCode;
+        } else {
+            uri = "http://api.caipiaoapi.com/hall/nodeService/api_request?gamekey=" + lottCode + "&count=" + rows + "&uid=330&time=1540179556&md5=f7ab80d949a4e60bcd1590c31060b6d4&api=apiGameInfo&site=api.jiekouapi.com&tdsourcetag=s_pcqq_aiomsg";
+        }
+        return uri;
+    }
+
+    private static void sleep(int i) {
+        try {
+            Thread.sleep(i);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 }
