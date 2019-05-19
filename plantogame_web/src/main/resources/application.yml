@@ -19,3 +19,9 @@ zuul:
     plantogame-plantogame:
       path: /plant/**
       serviceId: plantogame-plantogame
+    blind:
+      path: /blind/**
+      serviceId: blind
+ribbon:
+  ReadTimeout: 3000
+  ConnectTimeout: 3000
