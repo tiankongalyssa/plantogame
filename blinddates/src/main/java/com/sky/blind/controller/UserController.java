@@ -7,8 +7,6 @@ import entity.StatusCode;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Map;
-
 @RestController
 @RequestMapping("/user")
 public class UserController {
@@ -20,34 +18,14 @@ public class UserController {
         return new Result(true, StatusCode.OK, "查询成功", userService.findAll());
     }
 
-    @GetMapping("/{username}")
-    public Result findByUsername(@PathVariable String username) {
-        return new Result(true, StatusCode.OK, "查询成功", userService.findByUsername(username));
+    @GetMapping("/{id}")
+    public Result findById(@PathVariable Integer id) {
+        return new Result(true, StatusCode.OK, "查询成功", userService.findById(id));
     }
 
-    @PostMapping("/login")
-    public Result login(@RequestBody Map data) {
-        return new Result(true, StatusCode.OK, "登录成功", userService.login(data.get("username").toString(), data.get("password").toString()));
-    }
-
-    @PostMapping("/logout")
-    public Result logout(@RequestBody String username) {
-        userService.logout(username);
-        return new Result(true, StatusCode.OK, "退出成功");
-    }
-
-    @PostMapping
+    @PostMapping("/update")
     public Result update(@RequestBody User user) {
         userService.update(user);
-        return new Result(true, StatusCode.OK, "修改成功");
-    }
-
-    @PostMapping("/pwd")
-    public Result updatePasswrd(@RequestBody Map map) {
-        String username = map.get("username").toString();
-        String password = map.get("password").toString();
-        String newPassword = map.get("newPassword").toString();
-        userService.updatePassword(username, password, newPassword);
         return new Result(true, StatusCode.OK, "修改成功");
     }
 }

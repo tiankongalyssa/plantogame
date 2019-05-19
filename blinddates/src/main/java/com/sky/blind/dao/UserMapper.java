@@ -6,7 +6,9 @@ import tk.mybatis.mapper.common.Mapper;
 import java.util.List;
 
 public interface UserMapper extends Mapper<User> {
-    User findByUsername(String username);
     void update(User user);
-    List<User>findAll();
+
+    List<User> findAll();
+
+    User findById(Integer id);
 }

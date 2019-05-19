@@ -11,13 +11,11 @@ import java.util.Date;
 public class User {
     @Id
     private Integer id;
-
-    private String username;
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    private String password;
+    private Integer adminId;
     private String nickname;
     private Integer age;
     private String userFace;
+    private String weixin;
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private String images;
     @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -53,11 +51,11 @@ public class User {
     public String toString() {
         return "User{" +
                 "id=" + id +
-                ", username='" + username + '\'' +
-                ", password='" + password + '\'' +
+                ", adminId=" + adminId +
                 ", nickname='" + nickname + '\'' +
                 ", age=" + age +
                 ", userFace='" + userFace + '\'' +
+                ", weixin='" + weixin + '\'' +
                 ", images='" + images + '\'' +
                 ", education='" + education + '\'' +
                 ", need='" + need + '\'' +
@@ -84,20 +82,12 @@ public class User {
         this.id = id;
     }
 
-    public String getUsername() {
-        return username;
+    public Integer getAdminId() {
+        return adminId;
     }
 
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
+    public void setAdminId(Integer adminId) {
+        this.adminId = adminId;
     }
 
     public String getNickname() {
@@ -122,6 +112,14 @@ public class User {
 
     public void setUserFace(String userFace) {
         this.userFace = userFace;
+    }
+
+    public String getWeixin() {
+        return weixin;
+    }
+
+    public void setWeixin(String weixin) {
+        this.weixin = weixin;
     }
 
     public String getImages() {

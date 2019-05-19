@@ -24,4 +24,4 @@ eureka:
   instance:
     prefer-ip-address: true
 mybatis:
-  mapper-locations: classpath:*.xml
+  mapper-locations: classpath:mappers/*.xml

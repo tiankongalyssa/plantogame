@@ -5,11 +5,11 @@
 <mapper namespace="com.sky.blind.dao.UserMapper">
     <resultMap id="base" type="com.sky.blind.pojo.User">
         <id column="id" property="id"></id>
-        <result column="username" property="username"></result>
-        <result column="password" property="password"></result>
+        <result column="admin_id" property="adminId"></result>
         <result column="nickname" property="nickname"></result>
         <result column="age" property="age"></result>
         <result column="user_face" property="userFace"></result>
+        <result column="weixin" property="weixin"></result>
         <result column="education" property="education"></result>
         <result column="income" property="income"></result>
         <result column="height" property="height"></result>
@@ -27,14 +27,10 @@
     <select id="findAll" resultMap="base">
         select * from tb_user
     </select>
-    <select id="findByUsername" resultMap="base">
-        select * from tb_user where username = #{username}
-    </select>
     <update id="update" parameterType="com.sky.blind.pojo.User">
         update tb_user
         <set>
             <if test="nickname!=null">nickname = #{nickname},</if>
-            <if test="password!=null">password = #{password},</if>
             <if test="age!=null">age = #{age},</if>
             <if test="education!=null">education=#{education},</if>
             <if test="income!=null">income = #{income},</if>
@@ -53,4 +49,7 @@
         </set>
         where id = #{id}
     </update>
+    <select id="findById" resultMap="base">
+        select * from tb_user where id=#{id}
+    </select>
 </mapper>
