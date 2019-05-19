@@ -44,7 +44,11 @@ public class UserService {
     }
 
     private User getByUsername(String username) {
-        return userMapper.findByUsername(username);
+        User user = userMapper.findByUsername(username);
+        if (user == null) {
+            throw new RuntimeException("用户不存在");
+        }
+        return user;
     }
 
     public void update(User user) {
@@ -73,5 +77,11 @@ public class UserService {
         }
         user.setPassword(newPassword);
         updateUser(user);
+    }
+
+    public User findByUsername(String username) {
+        User user = getByUsername(username);
+        user.setPassword(null);
+        return user;
     }
 }

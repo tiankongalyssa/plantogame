@@ -12,7 +12,6 @@ public class ExceptionHandler {
     @org.springframework.web.bind.annotation.ExceptionHandler
     @ResponseBody
     public Result errorHandler(Exception e) {
-        e.printStackTrace();
         return new Result(false, StatusCode.ERROR, e.getMessage());
     }
 }

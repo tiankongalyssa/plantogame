@@ -19,6 +19,10 @@ public class UserController {
     public Result findAll() {
         return new Result(true, StatusCode.OK, "查询成功", userService.findAll());
     }
+    @GetMapping("/{username}")
+    public Result findByUsername(@PathVariable String username){
+       return new Result(true,StatusCode.OK,"查询成功",userService.findByUsername(username)) ;
+    }
 
     @PostMapping("/login")
     public Result login(@RequestBody Map data) {
