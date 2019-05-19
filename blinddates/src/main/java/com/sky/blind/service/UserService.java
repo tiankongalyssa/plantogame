@@ -84,4 +84,8 @@ public class UserService {
         user.setPassword(null);
         return user;
     }
+
+    public void logout(String username) {
+        redisTemplate.opsForValue().set("username" + username, username, 1, TimeUnit.SECONDS);
+    }
 }
