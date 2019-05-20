@@ -16,7 +16,6 @@ public class User {
     private Integer age;
     private String userFace;
     private String weixin;
-    @JsonInclude(JsonInclude.Include.NON_NULL)
     private String images;
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private String education; //学历

@@ -34,7 +34,7 @@
         <result column="modified_user" property="modifiedUser"></result>
         <result column="modified_time" property="modifiedTime"></result>
     </resultMap>
-    <select id="findByusername" resultMap="base">
+    <select id="findByUsername" resultMap="base">
         select * from tb_admin where username=#{username}
     </select>
     <select id="findByAdminId" resultMap="users">

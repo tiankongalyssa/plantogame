@@ -7,7 +7,8 @@ import tk.mybatis.mapper.common.Mapper;
 import java.util.List;
 
 public interface AdminMapper extends Mapper<Admin> {
-    Admin findByusername(String username);
+    Admin findByUsername(String username);
 
     List<User> findByAdminId(Integer admindId);
+
 }

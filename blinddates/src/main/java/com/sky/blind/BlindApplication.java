@@ -3,7 +3,9 @@ package com.sky.blind;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
+import org.springframework.context.annotation.Bean;
 import tk.mybatis.spring.annotation.MapperScan;
+import utils.JwtUtil;
 
 import java.util.TimeZone;
 
@@ -14,5 +16,10 @@ public class BlindApplication {
     public static void main(String[] args) {
         TimeZone.setDefault(TimeZone.getTimeZone("Asia/Shanghai"));
         SpringApplication.run(BlindApplication.class);
+    }
+
+    @Bean
+    public JwtUtil jwtUtil() {
+        return new JwtUtil();
     }
 }
