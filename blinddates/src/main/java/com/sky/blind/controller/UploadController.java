@@ -24,7 +24,8 @@ public class UploadController {
             String fileName = file.getOriginalFilename();
             File img = new File("/home/upload/" + System.currentTimeMillis() + fileName);
 //            File img = new File("D:/upload/" + System.currentTimeMillis() + fileName);
-            fileName = "D:/upload/"+fileName;
+//            fileName = "D:/upload/"+fileName;
+            fileName = "/home/upload/"+fileName;
             file.transferTo(img);
             return new Result(true, StatusCode.OK, "上传成功",fileName);
         } catch (IOException e) {
