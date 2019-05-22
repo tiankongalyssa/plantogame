@@ -22,7 +22,7 @@ public class UploadController {
         }
         try {
             String fileName = file.getOriginalFilename();
-            File img = new File("/home/upload/" + System.currentTimeMillis() + fileName);
+            File img = new File("/www/wwwroot/api.uixkei.cn/upload/" + System.currentTimeMillis() + fileName);
 //            File img = new File("D:/upload/" + System.currentTimeMillis() + fileName);
 //            fileName = "D:/upload/"+fileName;
             fileName = "/www/wwwroot/api.uixkei.cn/upload/"+fileName;
