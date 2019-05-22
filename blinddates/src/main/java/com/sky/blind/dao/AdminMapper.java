@@ -11,4 +11,6 @@ public interface AdminMapper extends Mapper<Admin> {
 
     List<User> findByAdminId(Integer admindId);
 
+    Admin findAdminById(Integer id);
+
 }

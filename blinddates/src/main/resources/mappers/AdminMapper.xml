@@ -44,4 +44,10 @@
         where a.id = u.admin_id
           and a.id = #{id}
     </select>
+    <select id="findAdminById" resultMap="base">
+        select *
+        from tb_admin
+        where id =#{id}
+    </select>
+
 </mapper>

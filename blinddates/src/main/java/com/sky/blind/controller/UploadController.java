@@ -23,9 +23,10 @@ public class UploadController {
         try {
             String fileName = System.currentTimeMillis() + file.getOriginalFilename();
             File img = new File("/www/wwwroot/api.uixkei.cn/upload/" + fileName);
+            fileName = "http://api.uixkei.cn/upload/" + fileName;
+
 //            File img = new File("D:/upload/" + System.currentTimeMillis() + fileName);
 //            fileName = "D:/upload/"+fileName;
-            fileName = "http://api.uixkei.cn/upload/" + fileName;
             file.transferTo(img);
             return new Result(true, StatusCode.OK, "上传成功", fileName);
         } catch (IOException e) {

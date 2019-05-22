@@ -15,15 +15,13 @@ import java.util.Map;
 @RestController
 @RequestMapping("/admin")
 @CrossOrigin
-public class AdminController {
+public class AdminController extends BaseController {
     private final AdminService adminService;
 
-    private final JwtUtil jwtUtil;
-
     @Autowired
-    public AdminController(AdminService adminService, JwtUtil jwtUtil) {
+    public AdminController(JwtUtil jwtUtil, AdminService adminService) {
+        super(jwtUtil);
         this.adminService = adminService;
-        this.jwtUtil = jwtUtil;
     }
 
     @PostMapping("/login")
@@ -49,15 +47,6 @@ public class AdminController {
         return new Result(true, StatusCode.OK, "查询成功", map);
     }
 
-    private Claims checkToken(String token) {
-        Claims claims;
-        try {
-            claims = jwtUtil.parseJWT(token);
-        } catch (Exception e) {
-            throw new RuntimeException("登录过期");
-        }
-        return claims;
-    }
 
     @PostMapping("/logout")
     public Result logout() {
@@ -69,4 +58,5 @@ public class AdminController {
         Claims claims = checkToken(token);
         return new Result(true, StatusCode.OK, "查询成功", adminService.findByAdminId(Integer.valueOf(claims.get("adminId").toString())));
     }
+
 }
