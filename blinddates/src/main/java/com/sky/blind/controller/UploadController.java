@@ -21,13 +21,13 @@ public class UploadController {
             return new Result(false, StatusCode.ERROR, "文件为空");
         }
         try {
-            String fileName = file.getOriginalFilename();
-            File img = new File("/www/wwwroot/api.uixkei.cn/upload/" + System.currentTimeMillis() + fileName);
+            String fileName = System.currentTimeMillis() + file.getOriginalFilename();
+            File img = new File("/www/wwwroot/api.uixkei.cn/upload/" + fileName);
 //            File img = new File("D:/upload/" + System.currentTimeMillis() + fileName);
 //            fileName = "D:/upload/"+fileName;
-            fileName = "/www/wwwroot/api.uixkei.cn/upload/"+fileName;
+            fileName = "http://api.uixkei.cn/upload/" + fileName;
             file.transferTo(img);
-            return new Result(true, StatusCode.OK, "上传成功",fileName);
+            return new Result(true, StatusCode.OK, "上传成功", fileName);
         } catch (IOException e) {
             e.printStackTrace();
         }
