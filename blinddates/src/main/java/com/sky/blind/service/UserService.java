@@ -1,5 +1,6 @@
 package com.sky.blind.service;
 
+import com.github.pagehelper.PageHelper;
 import com.sky.blind.dao.AdminMapper;
 import com.sky.blind.dao.UserMapper;
 import com.sky.blind.pojo.Admin;
@@ -51,5 +52,15 @@ public class UserService {
 
     public void deleteRecordById(Integer id) {
         userMapper.deleteByPrimaryKey(id);
+    }
+
+    /**
+     * 分页查询
+     *
+     * @return List<User>
+     */
+    public List<User> findPage(int page, int size) {
+        PageHelper.startPage(page, size);
+        return userMapper.selectAll();
     }
 }
