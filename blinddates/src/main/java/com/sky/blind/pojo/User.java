@@ -37,6 +37,10 @@ public class User {
     private String tag;
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private String constellcation; //星座
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    private String car;
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    private String house;
     @JsonIgnore
     private String createdUser;
     @JsonIgnore
@@ -66,6 +70,8 @@ public class User {
                 ", address='" + address + '\'' +
                 ", tag='" + tag + '\'' +
                 ", constellcation='" + constellcation + '\'' +
+                ", car='" + car + '\'' +
+                ", house='" + house + '\'' +
                 ", createdUser='" + createdUser + '\'' +
                 ", createdTime=" + createdTime +
                 ", modifiedUser='" + modifiedUser + '\'' +
@@ -207,6 +213,22 @@ public class User {
 
     public void setConstellcation(String constellcation) {
         this.constellcation = constellcation;
+    }
+
+    public String getCar() {
+        return car;
+    }
+
+    public void setCar(String car) {
+        this.car = car;
+    }
+
+    public String getHouse() {
+        return house;
+    }
+
+    public void setHouse(String house) {
+        this.house = house;
     }
 
     public String getCreatedUser() {

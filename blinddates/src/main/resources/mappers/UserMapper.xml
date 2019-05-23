@@ -17,6 +17,8 @@
         <result column="summary" property="summary"></result>
         <result column="job" property="job"></result>
         <result column="address" property="address"></result>
+        <result column="car" property="car"></result>
+        <result column="house" property="house"></result>
         <result column="tag" property="tag"></result>
         <result column="constellcation" property="constellcation"></result>
         <result column="created_user" property="createdUser"></result>
@@ -44,6 +46,8 @@
             <if test="images!=null">images = #{images},</if>
             <if test="address!=null">address = #{address},</if>
             <if test="tag!=null">tag = #{tag},</if>
+            <if test="car!=null">car=#{car},</if>
+            <if test="house!=null">house=#{house},</if>
             <if test="constellcation!=null">constellcation = #{constellcation},</if>
             <if test="modifiedTime!=null">modified_time= #{modifiedTime},</if>
             <if test="modifiedUser!=null">modified_user = #{modifiedUser}</if>
