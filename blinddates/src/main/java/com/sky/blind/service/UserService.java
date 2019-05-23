@@ -61,6 +61,8 @@ public class UserService {
      */
     public List<User> findPage(int page, int size) {
         PageHelper.startPage(page, size);
-        return userMapper.selectAll();
+        List<User> users = userMapper.selectAll();
+        Collections.shuffle(users);
+        return users;
     }
 }
