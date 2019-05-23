@@ -59,4 +59,23 @@ public class AdminController extends BaseController {
         return new Result(true, StatusCode.OK, "查询成功", adminService.findByAdminId(Integer.valueOf(claims.get("adminId").toString())));
     }
 
+    @GetMapping("/adminInfo")
+    public Result findByAdminByUsername(String token) {
+        Claims claims = checkToken(token);
+        String username = claims.get("username").toString();
+        Admin admin = adminService.findByUsername(username);
+        admin.setPassword(null);
+        return new Result(true, StatusCode.OK, "查询成功", admin);
+    }
+
+    @PutMapping
+    public Result update(@RequestBody Map map) {
+        adminService.update(map);
+        return new Result(true, StatusCode.OK, "修改成功");
+    }
+    @PostMapping
+    public Result addAdmin(@RequestBody Admin admin){
+        adminService.save(admin);
+        return new Result(true,StatusCode.OK,"添加成功");
+    }
 }

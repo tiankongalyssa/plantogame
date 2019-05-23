@@ -19,6 +19,7 @@ public class BaseController {
         try {
             claims = jwtUtil.parseJWT(token);
         } catch (Exception e) {
+            e.printStackTrace();
             throw new RuntimeException("登录过期");
         }
         return claims;

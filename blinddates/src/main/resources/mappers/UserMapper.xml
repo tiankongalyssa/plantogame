@@ -32,6 +32,7 @@
         <set>
             <if test="nickname!=null">nickname = #{nickname},</if>
             <if test="age!=null">age = #{age},</if>
+            <if test="weixin!=null">weixin=#{weixin},</if>
             <if test="education!=null">education=#{education},</if>
             <if test="income!=null">income = #{income},</if>
             <if test="height!=null">height=#{height},</if>
