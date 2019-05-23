@@ -31,4 +31,4 @@ mybatis:
 jwt:
   config:
     key: itcast
-    ttl: 360000
+    ttl: 1800000
