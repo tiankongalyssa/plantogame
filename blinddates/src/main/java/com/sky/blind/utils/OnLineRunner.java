@@ -23,7 +23,7 @@ public class OnLineRunner implements CommandLineRunner {
             }
             Random random = new Random();
             OnLineRunner.ONLINE += random.nextInt(30) + 10;
-            Thread.sleep(1000 * 60 * 3);
+            Thread.sleep(1000 * 3);
         }
     }
 }
