@@ -25,9 +25,7 @@ public class UserService {
     }
 
     public List<User> findAll() {
-        List<User> all = userMapper.findAll();
-        Collections.shuffle(all);
-        return all;
+        return userMapper.findAll();
     }
 
     public User findById(Integer id) {

@@ -18,7 +18,7 @@ public class OnLineRunner implements CommandLineRunner {
             if (18 == h && m < 6) {
                 ONLINE = 112031;
             }
-            if (h > 1 && h < 7 && m < 6) {
+            if (h > 3 && h < 7 && m < 6) {
                 ONLINE = 10000;
             }
             Random random = new Random();

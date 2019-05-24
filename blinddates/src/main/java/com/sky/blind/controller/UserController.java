@@ -26,7 +26,7 @@ public class UserController extends BaseController {
     @GetMapping("/online")
     public Result online() {
         Integer online = userService.findOnline();
-        return new Result(true, StatusCode.OK, "查询成功",online);
+        return new Result(true, StatusCode.OK, "查询成功", online);
     }
 
     @GetMapping("/search/{page}/{size}")
