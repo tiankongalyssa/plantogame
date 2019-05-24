@@ -5,6 +5,7 @@ import com.sky.blind.dao.AdminMapper;
 import com.sky.blind.dao.UserMapper;
 import com.sky.blind.pojo.Admin;
 import com.sky.blind.pojo.User;
+import com.sky.blind.utils.OnLineRunner;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -64,5 +65,10 @@ public class UserService {
         List<User> users = userMapper.selectAll();
         Collections.shuffle(users);
         return users;
+    }
+
+    //虚拟在线人数
+    public Integer findOnline() {
+        return OnLineRunner.ONLINE;
     }
 }

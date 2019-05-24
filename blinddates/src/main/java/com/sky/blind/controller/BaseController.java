@@ -1,5 +1,6 @@
 package com.sky.blind.controller;
 
+import com.sky.blind.service.exception.LoginDateException;
 import io.jsonwebtoken.Claims;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -19,8 +20,7 @@ public class BaseController {
         try {
             claims = jwtUtil.parseJWT(token);
         } catch (Exception e) {
-            e.printStackTrace();
-            throw new RuntimeException("登录过期");
+            throw new LoginDateException("登录过期");
         }
         return claims;
     }

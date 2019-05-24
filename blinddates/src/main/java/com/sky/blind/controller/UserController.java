@@ -23,11 +23,18 @@ public class UserController extends BaseController {
         this.userService = userService;
     }
 
-    @GetMapping("/search/{page}/{size}")
-    public Result fingPage(@PathVariable int page,@PathVariable int size){
-        List<User> list = userService.findPage(page,size);
-        return new Result(true,StatusCode.OK,"查询成功",list);
+    @GetMapping("/online")
+    public Result online() {
+        Integer online = userService.findOnline();
+        return new Result(true, StatusCode.OK, "查询成功",online);
     }
+
+    @GetMapping("/search/{page}/{size}")
+    public Result fingPage(@PathVariable int page, @PathVariable int size) {
+        List<User> list = userService.findPage(page, size);
+        return new Result(true, StatusCode.OK, "查询成功", list);
+    }
+
     @GetMapping
     public Result findAll() {
         return new Result(true, StatusCode.OK, "查询成功", userService.findAll());
