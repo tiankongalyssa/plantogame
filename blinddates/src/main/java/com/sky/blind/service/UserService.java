@@ -45,7 +45,6 @@ public class UserService {
         user.setModifiedTime(date);
         user.setCreatedUser(username);
         user.setModifiedUser(username);
-        System.out.println(user);
         userMapper.insert(user);
     }
 
