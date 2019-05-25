@@ -17,7 +17,7 @@ public class Command {
 
     public String clearImg() {
         int total;
-        int userimg = 0;
+        int userimg;
         int residue; //剩余
         List<String> fileNames = new ArrayList<>();
         List<String> userImages = new ArrayList<>();
