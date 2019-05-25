@@ -18,7 +18,7 @@ public class OnLineRunner implements CommandLineRunner {
             int h = Calendar.getInstance().get(Calendar.HOUR_OF_DAY);
             int m = Calendar.getInstance().get(Calendar.MINUTE);
             int s = Calendar.getInstance().get(Calendar.SECOND);
-            if (13 == h && m == 1 && s < 5) { //每天13点 重新计算
+            if (5 == h && m == 1 && s < 5) { //每天5点 重新计算
                 onLineNumber = (random.nextInt(7000) + 1000) + 118000;
             }
             if (onLineNumber < 120000) {
