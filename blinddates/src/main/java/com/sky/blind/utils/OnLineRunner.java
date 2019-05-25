@@ -8,22 +8,31 @@ import java.util.Random;
 
 @Component
 public class OnLineRunner implements CommandLineRunner {
-    public static Integer ONLINE = 112031;
+    public static Integer onLineNumber = 120000;
+    private boolean isAdd = true;
 
     @Override
     public void run(String... args) throws Exception {
+        Random random = new Random();
         while (true) {
             int h = Calendar.getInstance().get(Calendar.HOUR_OF_DAY);
             int m = Calendar.getInstance().get(Calendar.MINUTE);
-            if (18 == h && m < 6) {
-                ONLINE = 112031;
+            int s = Calendar.getInstance().get(Calendar.SECOND);
+            if (13 == h && m == 1 && s < 5) { //每天10点 重新计算
+                onLineNumber = (random.nextInt(7000) + 1000) + 118000;
             }
-            if (h > 3 && h < 7 && m < 6) {
-                ONLINE = 10000;
+            if (onLineNumber < 120000) {
+                isAdd = true;
             }
-            Random random = new Random();
-            OnLineRunner.ONLINE += random.nextInt(30) + 10;
-            Thread.sleep(1000 * 3);
+            if (onLineNumber > 500000) {
+                isAdd = false;
+            }
+            if (isAdd) { //如果小于50w就增加
+                onLineNumber += random.nextInt(10) + 10; //每秒 添加10-20人
+            } else {
+                onLineNumber -= random.nextInt(50) + 10; //每秒 减小50-60人
+            }
+            Thread.sleep(1000);
         }
     }
 }

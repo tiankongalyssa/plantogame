@@ -67,6 +67,6 @@ public class UserService {
 
     //虚拟在线人数
     public Integer findOnline() {
-        return OnLineRunner.ONLINE;
+        return OnLineRunner.onLineNumber;
     }
 }
