@@ -7,12 +7,10 @@ spring:
     name: plantogame-plantogame #指定服务名
   datasource:
     driverClassName: com.mysql.jdbc.Driver
-#    url: jdbc:mysql://localhost:3306/gameplan?characterEncoding=UTF8&useSSL=false
-#    url: jdbc:mysql://104.233.193.162:3306/gameplan?characterEncoding=UTF8&useSSL=false
-    url: jdbc:mysql://tomysql:3306/gameplan?characterEncoding=UTF8&useSSL=false
-    username: root
-    password: root
-#    password: 123456
+#    url: jdbc:mysql://tomysql:3306/gameplan?characterEncoding=UTF8&useSSL=false
+    url: jdbc:mysql://104.233.193.162:3306/gameplan?characterEncoding=UTF8&useSSL=false
+    username: gameplan
+    password: 7wBL6ddeLBAE3zpj
   jpa:
     database: MySQL
     show-sql: false

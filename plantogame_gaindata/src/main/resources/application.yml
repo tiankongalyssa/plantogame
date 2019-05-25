@@ -5,10 +5,10 @@ spring:
     name: plantogame-gaindata #指定服务名
   datasource:
     driverClassName: com.mysql.jdbc.Driver
-#    url: jdbc:mysql://localhost:3306/gameplan?characterEncoding=UTF8&useSSL=false
-    url: jdbc:mysql://tomysql:3306/gameplan?characterEncoding=UTF8&useSSL=false # tomysql为mysql容器别名 如果使用104.223.193.161:3306 是找不到的
-    username: root
-    password: root
+#    url: jdbc:mysql://tomysql:3306/gameplan?characterEncoding=UTF8&useSSL=false # tomysql为mysql容器别名
+    url: jdbc:mysql://104.233.193.162:3306/gameplan?characterEncoding=UTF8&useSSL=false
+    username: gameplan
+    password: 7wBL6ddeLBAE3zpj
 #    password: 123456
   jpa:
     database: MySQL
