@@ -1,0 +1,16 @@
+spring:
+  jackson: # 配置时区(不配置 在服务器启动时时间会与本地不一致)
+    time-zone: Asia/Shanghai
+  redis:
+    host: 104.233.193.162
+  application:
+    name: foreign-sms
+eureka:
+  client:
+    service-url:
+#      defaultZone: http://127.0.0.1:6868/eureka/
+      defaultZone: http://104.233.193.162:6868/eureka/
+  instance: # 将容器IP注册到eureka 不配置就是容器名 (这里老师讲过,在服务器部署时需要打开,但我却没有注意到..)
+    prefer-ip-address: true
+server:
+  port: 9004
