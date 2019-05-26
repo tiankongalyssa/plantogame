@@ -28,7 +28,7 @@ public class ForeignSMSService {
         data.put("time", System.currentTimeMillis() + 1000 * 60);
         SMSUtil.mobileQuery(mobile, checkCode, "160984");
         redisTemplate.opsForValue().set("smsCode_" + mobile, data, 2, TimeUnit.MINUTES);
-        return "发送成功";
+        return checkCode;
     }
 
     public String getCheckCode(String mobile) {

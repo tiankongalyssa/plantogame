@@ -16,7 +16,7 @@ public class ForeignSMSController {
 
     @PostMapping
     public Result sendSMS(@RequestBody Map data) {
-        return new Result(true, StatusCode.OK, foreignService.send(data.get("mobile").toString()));
+        return new Result(true, StatusCode.OK,"发送成功", foreignService.send(data.get("mobile").toString()));
     }
     @PostMapping("/get_code")
     public Result getCheckCode(@RequestBody Map data) {
