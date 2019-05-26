@@ -10,6 +10,7 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/sms")
+@CrossOrigin
 public class ForeignSMSController {
     @Autowired
     private ForeignSMSService foreignService;
