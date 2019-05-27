@@ -10,7 +10,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import utils.JwtUtil;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/user")
@@ -24,6 +26,23 @@ public class UserController extends BaseController {
         this.userService = userService;
     }
 
+    @PostMapping("/login")
+    public Result login(@RequestBody Map map) {
+        Map checkMap = userService.login(map);
+        Admin admin = (Admin) checkMap.get("admin");
+        User user = (User) checkMap.get("user");
+        Map data = new HashMap();
+        data.put("username", admin.getUsername());
+        data.put("id", admin.getId());
+        data.put("userFace", user.getUserFace());
+        String token = jwtUtil.createJWT(admin.getId().toString(), data, "user");
+        data.put("token",token);
+        data.remove("roles");
+        data.remove("id");
+        data.remove("exp");
+        data.remove("iat");
+        return new Result(true, StatusCode.OK, "success", data);
+    }
     /**
      * check username
      */

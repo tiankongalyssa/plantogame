@@ -57,5 +57,8 @@
     <select id="findById" resultMap="base">
         select * from tb_user where id=#{id}
     </select>
+    <select id="findByAdminId" resultMap="base">
+        select * from tb_user where admin_id=#{id};
+    </select>
 </mapper>
 

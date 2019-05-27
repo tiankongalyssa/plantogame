@@ -5,17 +5,15 @@ import com.sky.blind.dao.AdminMapper;
 import com.sky.blind.dao.UserMapper;
 import com.sky.blind.pojo.Admin;
 import com.sky.blind.pojo.User;
-import com.sky.blind.service.exception.SMSException;
-import com.sky.blind.service.exception.UsernameAlreadyExistsException;
+import com.sky.blind.service.exception.*;
 import com.sky.blind.utils.OnLineRunner;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.Collections;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 import java.util.concurrent.TimeUnit;
 
 @Service
@@ -28,6 +26,9 @@ public class UserService {
         this.userMapper = userMapper;
         this.adminMapper = adminMapper;
     }
+
+    @Autowired
+    private BCryptPasswordEncoder encoder;
 
     @Autowired
     private RedisTemplate redisTemplate;
@@ -127,6 +128,7 @@ public class UserService {
             throw new SMSException("验证码输入不正确");
         }
         Date date = new Date();
+        admin.setPassword(encoder.encode(admin.getPassword()));
         admin.setIsAdmin(0);
         admin.setModifiedTime(date);
         String username = admin.getUsername();
@@ -159,5 +161,32 @@ public class UserService {
         if (admin != null) {
             throw new UsernameAlreadyExistsException("用户名已存在");
         }
+    }
+
+    public Map login(Map map) {
+        String username = map.get("username").toString();
+        String password = map.get("password").toString();
+        if (username == null || password == null) {
+            throw new ServiceException("用户名或密码不能为空");
+        }
+        Admin admin = adminMapper.findByUsername(username);
+        if (admin == null) {
+            throw new UserNotFoundException("用户不存在");
+        }
+        if (!encoder.matches(password, admin.getPassword())) {
+            throw new PasswordNotMathchException("用户名或密码错误");
+        }
+        if (admin.getIsAdmin() == 1) {
+            throw new ServiceException("权限不足");
+        }
+        User user = findByAdminId(admin.getId());
+        Map result = new HashMap();
+        result.put("admin", admin);
+        result.put("user", user);
+        return result;
+    }
+
+    public User findByAdminId(Integer id) {
+        return userMapper.findByAdminId(id);
     }
 }

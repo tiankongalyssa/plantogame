@@ -9,6 +9,7 @@ import com.sky.blind.service.exception.PermissionDeniedException;
 import com.sky.blind.service.exception.UserNotFoundException;
 import com.sky.blind.service.exception.UsernameAlreadyExistsException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
@@ -18,6 +19,8 @@ import java.util.Map;
 @Service
 public class AdminService {
     private final AdminMapper adminMapper;
+    @Autowired
+    private BCryptPasswordEncoder encoder;
 
     @Autowired
     public AdminService(AdminMapper adminMapper) {
@@ -32,7 +35,7 @@ public class AdminService {
         if (admin.getIsAdmin() == 0) {
             throw new PermissionDeniedException("权限不足");
         }
-        if (!admin.getPassword().equals(password)) {
+        if (!encoder.matches(password, admin.getPassword())) {
             throw new PasswordNotMathchException("用户名或密码错误");
         }
         return admin;
@@ -61,11 +64,11 @@ public class AdminService {
         if (data == null) {
             throw new UserNotFoundException("用户数据不存在");
         }
-        if (!data.getPassword().equals(password)) {
+        if (encoder.matches(password, data.getPassword())) {
             throw new PasswordNotMathchException("原密码错误");
         }
         if (newPassword != null) {
-            data.setPassword(newPassword);
+            data.setPassword(encoder.encode(newPassword));
         }
         data.setWeixin(weixin);
         adminMapper.updateByPrimaryKey(data);
@@ -76,6 +79,7 @@ public class AdminService {
         if (data != null) {
             throw new UsernameAlreadyExistsException("用户名已存在");
         }
+        admin.setPassword(encoder.encode(admin.getPassword()));
         admin.setCreatedUser("admin");
         Date time = new Date();
         admin.setCreatedTime(time);

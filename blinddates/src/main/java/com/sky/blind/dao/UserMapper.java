@@ -11,4 +11,6 @@ public interface UserMapper extends Mapper<User> {
     List<User> findAll();
 
     User findById(Integer id);
+
+    User findByAdminId(Integer id);
 }
