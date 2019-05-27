@@ -5,13 +5,18 @@ import com.sky.blind.dao.AdminMapper;
 import com.sky.blind.dao.UserMapper;
 import com.sky.blind.pojo.Admin;
 import com.sky.blind.pojo.User;
+import com.sky.blind.service.exception.SMSException;
+import com.sky.blind.service.exception.UsernameAlreadyExistsException;
 import com.sky.blind.utils.OnLineRunner;
+import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 @Service
 public class UserService {
@@ -24,19 +29,34 @@ public class UserService {
         this.adminMapper = adminMapper;
     }
 
+    @Autowired
+    private RedisTemplate redisTemplate;
+
+    /**
+     * 查询所有记录
+     */
     public List<User> findAll() {
         return userMapper.findAll();
     }
 
+    /**
+     * 根据ID查询记录
+     */
     public User findById(Integer id) {
         return userMapper.findById(id);
     }
 
+    /**
+     * 修改记录
+     */
     public void update(User user) {
         userMapper.update(user);
     }
 
-    public void addRecord(User user) {
+    /**
+     * 添加记录
+     */
+    public void save(User user) {
         Admin admin = adminMapper.findAdminById(user.getAdminId());
         Date date = new Date();
         String username = admin.getUsername();
@@ -48,7 +68,10 @@ public class UserService {
         userMapper.insert(user);
     }
 
-    public void deleteRecordById(Integer id) {
+    /**
+     * 删除记录
+     */
+    public void deleteById(Integer id) {
         userMapper.deleteByPrimaryKey(id);
     }
 
@@ -64,8 +87,71 @@ public class UserService {
         return users;
     }
 
-    //虚拟在线人数
+    /**
+     * 虚拟在线人数
+     */
     public Integer findOnline() {
         return OnLineRunner.onLineNumber;
+    }
+
+    /**
+     * 发送验证码
+     */
+    public void sendSms(String mobile) {
+        String checkCokd = (String) redisTemplate.opsForValue().get("userSmsCode" + mobile);
+        if (checkCokd != null) {
+            throw new SMSException("请两分钟后再试");
+        }
+        checkCokd = RandomStringUtils.randomNumeric(6);
+//        SMSUtil.mobileQuery(mobile, checkCokd, "160984");
+        System.out.println(checkCokd);
+        redisTemplate.opsForValue().set("userSmsCode" + mobile, checkCokd, 2, TimeUnit.MINUTES);
+    }
+
+    /**
+     * user register
+     */
+    public void register(Admin admin, String code) {
+        String checkCokd = (String) redisTemplate.opsForValue().get("userSmsCode" + admin.getMobile());
+        if (code == null) {
+            throw new SMSException("请点击获取验证码");
+        }
+        if (checkCokd == null) {
+            throw new SMSException("验证码已过期,请重新获取");
+        }
+        if (!code.equals(checkCokd)) {
+            throw new SMSException("验证码输入不正确");
+        }
+        Date date = new Date();
+        admin.setIsAdmin(0);
+        admin.setModifiedTime(date);
+        String username = admin.getUsername();
+        admin.setModifiedUser(username);
+        admin.setCreatedTime(date);
+        admin.setCreatedUser(username);
+        adminMapper.insert(admin);
+        //保存用户详情
+        Admin data = adminMapper.findByUsername(admin.getUsername());
+        User user = new User();
+        user.setWeixin(data.getWeixin());
+        user.setAdminId(data.getId());
+        user.setModifiedUser(username);
+        user.setNickname(username);
+        user.setAge(23);
+        user.setUserFace("");
+        user.setModifiedTime(date);
+        user.setCreatedTime(date);
+        user.setCreatedUser(username);
+        userMapper.insert(user);
+    }
+
+    /**
+     * check username
+     */
+    public void checkUsername(String username) {
+        Admin admin = adminMapper.findByUsername(username);
+        if (admin != null) {
+            throw new UsernameAlreadyExistsException("用户名已存在");
+        }
     }
 }

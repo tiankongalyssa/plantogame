@@ -8,6 +8,7 @@
         <result column="username" property="username"></result>
         <result column="password" property="password"></result>
         <result column="weixin" property="weixin"></result>
+        <result column="mobile" property="mobile"></result>
         <result column="created_user" property="createdUser"></result>
         <result column="created_time" property="createdTime"></result>
         <result column="modified_user" property="modifiedUser"></result>

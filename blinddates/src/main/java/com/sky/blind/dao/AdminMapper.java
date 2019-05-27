@@ -8,9 +8,6 @@ import java.util.List;
 
 public interface AdminMapper extends Mapper<Admin> {
     Admin findByUsername(String username);
-
     List<User> findByAdminId(Integer admindId);
-
     Admin findAdminById(Integer id);
-
 }

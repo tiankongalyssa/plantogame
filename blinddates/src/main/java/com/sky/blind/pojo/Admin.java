@@ -13,6 +13,8 @@ public class Admin  implements Serializable {
     private String username;
     private String password;
     private String weixin;
+    private String mobile;
+    private Integer isAdmin;
     private String createdUser;
     private Date createdTime;
     private String modifiedUser;
@@ -25,6 +27,8 @@ public class Admin  implements Serializable {
                 ", username='" + username + '\'' +
                 ", password='" + password + '\'' +
                 ", weixin='" + weixin + '\'' +
+                ", mobile='" + mobile + '\'' +
+                ", isAdmin=" + isAdmin +
                 ", createdUser='" + createdUser + '\'' +
                 ", createdTime=" + createdTime +
                 ", modifiedUser='" + modifiedUser + '\'' +
@@ -62,6 +66,22 @@ public class Admin  implements Serializable {
 
     public void setWeixin(String weixin) {
         this.weixin = weixin;
+    }
+
+    public String getMobile() {
+        return mobile;
+    }
+
+    public void setMobile(String mobile) {
+        this.mobile = mobile;
+    }
+
+    public Integer getIsAdmin() {
+        return isAdmin;
+    }
+
+    public void setIsAdmin(Integer isAdmin) {
+        this.isAdmin = isAdmin;
     }
 
     public String getCreatedUser() {

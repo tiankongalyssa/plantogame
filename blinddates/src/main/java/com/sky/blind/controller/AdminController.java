@@ -63,7 +63,7 @@ public class AdminController extends BaseController {
     }
 
     /**
-     * 根据管理员用户名所有记录
+     * 查询管理员添加的所有记录
      */
     @GetMapping("/list")
     public Result findByAdminId(String token) {
@@ -72,6 +72,9 @@ public class AdminController extends BaseController {
         return new Result(true, StatusCode.OK, "查询成功", adminService.findByAdminId(Integer.valueOf(claims.get("adminId").toString())));
     }
 
+    /**
+     * 根据token分页查询 管理员的所有记录
+     */
     @GetMapping("/search/{page}/{size}")
     public Result searchByAdminID(@PathVariable int page, @PathVariable int size, String token) {
         Claims claims = checkToken(token);

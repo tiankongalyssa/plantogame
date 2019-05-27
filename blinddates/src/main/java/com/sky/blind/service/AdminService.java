@@ -5,6 +5,7 @@ import com.sky.blind.dao.AdminMapper;
 import com.sky.blind.pojo.Admin;
 import com.sky.blind.pojo.User;
 import com.sky.blind.service.exception.PasswordNotMathchException;
+import com.sky.blind.service.exception.PermissionDeniedException;
 import com.sky.blind.service.exception.UserNotFoundException;
 import com.sky.blind.service.exception.UsernameAlreadyExistsException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,6 +28,9 @@ public class AdminService {
         Admin admin = adminMapper.findByUsername(username);
         if (admin == null) {
             throw new UserNotFoundException("用户不存在");
+        }
+        if (admin.getIsAdmin() == 0) {
+            throw new PermissionDeniedException("权限不足");
         }
         if (!admin.getPassword().equals(password)) {
             throw new PasswordNotMathchException("用户名或密码错误");
