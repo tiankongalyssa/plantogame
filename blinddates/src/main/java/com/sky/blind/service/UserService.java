@@ -84,6 +84,12 @@ public class UserService {
     public List<User> findPage(int page, int size) {
         PageHelper.startPage(page, size);
         List<User> users = userMapper.selectAll();
+        for (int i = 0; i < users.size(); i++) {
+            User user = users.get(0);
+            if (user.getUserFace().equals("") || user.getEducation().equals("") || user.getEducation() == null) {
+                users.remove(i);
+            }
+        }
         Collections.shuffle(users);
         return users;
     }
