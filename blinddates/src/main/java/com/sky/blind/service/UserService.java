@@ -112,6 +112,10 @@ public class UserService {
      * user register
      */
     public void register(Admin admin, String code) {
+        Admin findUser = adminMapper.findByUsername(admin.getUsername());
+        if (findUser != null) {
+            throw new UsernameAlreadyExistsException("用户已存在");
+        }
         String checkCokd = (String) redisTemplate.opsForValue().get("userSmsCode" + admin.getMobile());
         if (code == null) {
             throw new SMSException("请点击获取验证码");
