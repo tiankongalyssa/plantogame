@@ -26,6 +26,12 @@ public class UserController extends BaseController {
         this.userService = userService;
     }
 
+    @GetMapping("/userInfo/{token}")
+    public Result findByToken(@PathVariable String token) {
+        Claims claims = checkToken(token);
+        return new Result(true, StatusCode.OK, "查询成功", userService.findByAdminId((int) claims.get("id")));
+    }
+
     @PostMapping("/login")
     public Result login(@RequestBody Map map) {
         Map checkMap = userService.login(map);
@@ -36,13 +42,13 @@ public class UserController extends BaseController {
         data.put("id", admin.getId());
         data.put("userFace", user.getUserFace());
         String token = jwtUtil.createJWT(admin.getId().toString(), data, "user");
-        data.put("token",token);
+        data.put("token", token);
         data.remove("roles");
-        data.remove("id");
         data.remove("exp");
         data.remove("iat");
         return new Result(true, StatusCode.OK, "success", data);
     }
+
     /**
      * check username
      */
@@ -100,6 +106,7 @@ public class UserController extends BaseController {
     public Result findAll() {
         return new Result(true, StatusCode.OK, "查询成功", userService.findAll());
     }
+
 
     /**
      * 根据ID查询记录
