@@ -145,6 +145,7 @@ public class UserService {
         user.setNickname(username);
         user.setAge(23);
         user.setUserFace("");
+        user.setEducation("");
         user.setModifiedTime(date);
         user.setCreatedTime(date);
         user.setCreatedUser(username);
