@@ -147,6 +147,8 @@ public class UserService {
         user.setCreatedTime(date);
         user.setCreatedUser(username);
         userMapper.insert(user);
+        //注册成功后验证码作废
+        redisTemplate.opsForValue().set("userSmsCode" + admin.getMobile(), "", 1, TimeUnit.SECONDS);
     }
 
     /**
