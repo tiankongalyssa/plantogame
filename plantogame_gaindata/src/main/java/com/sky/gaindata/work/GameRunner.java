@@ -117,7 +117,7 @@ public class GameRunner extends BaseWork implements ApplicationRunner {
             }
             LotteryRecord lotteryRecord = jsonToLotteryRecord(gameKey, foreignData);
             //如果期号为空直接结束方法
-            if (lotteryRecord.getGid() == null) {
+            if (lotteryRecord != null && lotteryRecord.getGid() == null) {
                 System.out.println("handlerGame()  gameKey:" + gameKey + " gid is null");
                 return;
             }
