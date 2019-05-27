@@ -26,7 +26,6 @@ public class AdminService {
 
     public Admin login(String username, String password) {
         Admin admin = adminMapper.findByUsername(username);
-        System.out.println(admin);
         if (admin == null) {
             throw new UserNotFoundException("用户不存在");
         }
